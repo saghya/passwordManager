@@ -1,0 +1,10 @@
+*.bak
+.mxproject
+.settings/
+History/
+Project Logs for PasswordManager/
+Project Logs for Password_HW/
+__Previews/
+
+Debug/
+*.launch
