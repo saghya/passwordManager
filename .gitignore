@@ -1,5 +1,6 @@
+.cache
+build
 *.bak
-.mxproject
 .settings/
 History/
 Project Logs for PasswordManager/

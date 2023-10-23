@@ -3,7 +3,7 @@
 #include "main.h"
 
 #define LED_BRIGHTNESS 1000
-#define LED TIM15->CCR2
+#define LED            TIM15->CCR2
 
 void LED_On();
 void LED_Off();

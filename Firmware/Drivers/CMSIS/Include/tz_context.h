@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-#if   defined ( __ICCARM__ )
-  #pragma system_include         /* treat file as system include file for MISRA check */
-#elif defined (__clang__)
-  #pragma clang system_header   /* treat file as system include file */
+#if defined(__ICCARM__)
+#pragma system_include /* treat file as system include file for MISRA check */
+#elif defined(__clang__)
+#pragma clang system_header /* treat file as system include file */
 #endif
 
 #ifndef TZ_CONTEXT_H
@@ -67,4 +67,4 @@ uint32_t TZ_LoadContext_S(TZ_MemoryId_t id);
 /// \return execution status (1: success, 0: error)
 uint32_t TZ_StoreContext_S(TZ_MemoryId_t id);
 
-#endif  // TZ_CONTEXT_H
+#endif // TZ_CONTEXT_H

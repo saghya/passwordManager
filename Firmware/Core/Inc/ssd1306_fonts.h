@@ -6,9 +6,9 @@
 #include "ssd1306_conf.h"
 
 typedef struct {
-	uint8_t width; /*!< Font width in pixels */
-	uint8_t height; /*!< Font height in pixels */
-	uint16_t *data; /*!< Pointer to data font data array */
+    uint8_t   width;  /*!< Font width in pixels */
+    uint8_t   height; /*!< Font height in pixels */
+    uint16_t *data;   /*!< Pointer to data font data array */
 } FontDef;
 
 #ifdef SSD1306_INCLUDE_FONT_6x8

@@ -27,7 +27,7 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal_def.h"
 
-#if defined (USB) || defined (USB_OTG_FS)
+#if defined(USB) || defined(USB_OTG_FS)
 /** @addtogroup STM32L4xx_HAL_Driver
  * @{
  */
@@ -46,14 +46,15 @@ extern "C" {
  * @{
  */
 
-#if defined (USB_OTG_FS)
-HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uint16_t size);
+#if defined(USB_OTG_FS)
+HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo,
+                                      uint16_t size);
 HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size);
 #endif /* defined (USB_OTG_FS) */
 
-#if defined (USB)
+#if defined(USB)
 HAL_StatusTypeDef HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd, uint16_t ep_addr,
-		uint16_t ep_kind, uint32_t pmaadress);
+                                      uint16_t ep_kind, uint32_t pmaadress);
 #endif /* defined (USB) */
 
 HAL_StatusTypeDef HAL_PCDEx_ActivateLPM(PCD_HandleTypeDef *hpcd);
@@ -61,7 +62,7 @@ HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd);
 
 HAL_StatusTypeDef HAL_PCDEx_ActivateBCD(PCD_HandleTypeDef *hpcd);
 HAL_StatusTypeDef HAL_PCDEx_DeActivateBCD(PCD_HandleTypeDef *hpcd);
-void HAL_PCDEx_BCD_VBUSDetect(PCD_HandleTypeDef *hpcd);
+void              HAL_PCDEx_BCD_VBUSDetect(PCD_HandleTypeDef *hpcd);
 
 void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef msg);
 void HAL_PCDEx_BCD_Callback(PCD_HandleTypeDef *hpcd, PCD_BCD_MsgTypeDef msg);

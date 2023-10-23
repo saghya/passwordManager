@@ -2,6 +2,4 @@
 #include "keyboard.h"
 #include "pin.h"
 
-void sendPassword(char *str) {
-	typeString(str);
-}
+void sendPassword(char *str) { typeString(str); }

@@ -21,8 +21,8 @@
 //#define SSD1306_USE_SPI
 
 // I2C Configuration
-#define SSD1306_I2C_PORT        hi2c1
-#define SSD1306_I2C_ADDR        (0x3C << 1)
+#define SSD1306_I2C_PORT hi2c1
+#define SSD1306_I2C_ADDR (0x3C << 1)
 
 // SPI Configuration
 //#define SSD1306_SPI_PORT        hspi1
