@@ -53,6 +53,9 @@ Core/Src/stm32l4xx_it.c \
 Core/Src/stm32l4xx_hal_msp.c \
 Core/Src/syscalls.c \
 Core/Src/sysmem.c \
+Core/Src/chacha.c \
+Core/Src/flash.c \
+Core/Src/record.c \
 USB_DEVICE/App/usb_device.c \
 USB_DEVICE/App/usbd_desc.c \
 USB_DEVICE/Target/usbd_conf.c \
@@ -232,6 +235,12 @@ gdb:
 #######################################
 format:
 	find . -name "*.c" -o -name "*.h" | sed 's| |\\ |g' | xargs clang-format -i
+
+#######################################
+# format
+#######################################
+reset:
+	STM32_Programmer_CLI -c port=SWD mode=UR freq=4000 -g
   
 #######################################
 # dependencies

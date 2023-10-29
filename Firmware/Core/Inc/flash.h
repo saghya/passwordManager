@@ -3,10 +3,8 @@
 
 #include <stdint.h>
 #include "stm32l4xx_hal.h"
-#include "stm32l4xx_hal_flash.h"
-#include "stm32l4xx_hal_flash_ex.h"
 
-#define NUM_OF_PAGES    (64 / 2)
+#define NUM_OF_PAGES    (64)
 #define FIRST_PAGE_ADDR (0x8000000)
 
 void     Flash_Read_Data(uint32_t StartPageAddress, uint64_t *RxBuf,

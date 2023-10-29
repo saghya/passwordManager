@@ -30,9 +30,9 @@
       "build/main.o",
       "Core/Src/main.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/main.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/main.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/main.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/main.o"
   },
   {
     "arguments": [
@@ -65,9 +65,9 @@
       "build/buttons.o",
       "Core/Src/buttons.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/buttons.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/buttons.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/buttons.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/buttons.o"
   },
   {
     "arguments": [
@@ -100,9 +100,9 @@
       "build/encoder.o",
       "Core/Src/encoder.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/encoder.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/encoder.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/encoder.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/encoder.o"
   },
   {
     "arguments": [
@@ -135,9 +135,9 @@
       "build/keyboard.o",
       "Core/Src/keyboard.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/keyboard.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/keyboard.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/keyboard.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/keyboard.o"
   },
   {
     "arguments": [
@@ -170,9 +170,9 @@
       "build/led.o",
       "Core/Src/led.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/led.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/led.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/led.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/led.o"
   },
   {
     "arguments": [
@@ -205,9 +205,9 @@
       "build/menu.o",
       "Core/Src/menu.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/menu.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/menu.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/menu.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/menu.o"
   },
   {
     "arguments": [
@@ -240,9 +240,9 @@
       "build/page.o",
       "Core/Src/page.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/page.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/page.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/page.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/page.o"
   },
   {
     "arguments": [
@@ -275,9 +275,9 @@
       "build/passwords.o",
       "Core/Src/passwords.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/passwords.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/passwords.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/passwords.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/passwords.o"
   },
   {
     "arguments": [
@@ -310,9 +310,9 @@
       "build/pin.o",
       "Core/Src/pin.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/pin.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/pin.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/pin.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/pin.o"
   },
   {
     "arguments": [
@@ -345,9 +345,9 @@
       "build/settings.o",
       "Core/Src/settings.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/settings.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/settings.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/settings.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/settings.o"
   },
   {
     "arguments": [
@@ -380,9 +380,9 @@
       "build/sites.o",
       "Core/Src/sites.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/sites.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/sites.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/sites.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/sites.o"
   },
   {
     "arguments": [
@@ -415,9 +415,9 @@
       "build/ssd1306.o",
       "Core/Src/ssd1306.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/ssd1306.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/ssd1306.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/ssd1306.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/ssd1306.o"
   },
   {
     "arguments": [
@@ -450,9 +450,9 @@
       "build/ssd1306_fonts.o",
       "Core/Src/ssd1306_fonts.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/ssd1306_fonts.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/ssd1306_fonts.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/ssd1306_fonts.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/ssd1306_fonts.o"
   },
   {
     "arguments": [
@@ -485,9 +485,9 @@
       "build/stm32l4xx_it.o",
       "Core/Src/stm32l4xx_it.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/stm32l4xx_it.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_it.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/stm32l4xx_it.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_it.o"
   },
   {
     "arguments": [
@@ -520,9 +520,9 @@
       "build/stm32l4xx_hal_msp.o",
       "Core/Src/stm32l4xx_hal_msp.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/stm32l4xx_hal_msp.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_msp.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/stm32l4xx_hal_msp.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_msp.o"
   },
   {
     "arguments": [
@@ -555,9 +555,9 @@
       "build/syscalls.o",
       "Core/Src/syscalls.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/syscalls.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/syscalls.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/syscalls.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/syscalls.o"
   },
   {
     "arguments": [
@@ -590,9 +590,114 @@
       "build/sysmem.o",
       "Core/Src/sysmem.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/sysmem.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/sysmem.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/sysmem.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/sysmem.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-c",
+      "-mcpu=cortex-m4",
+      "-mthumb",
+      "-mfpu=fpv4-sp-d16",
+      "-mfloat-abi=hard",
+      "-DUSE_HAL_DRIVER",
+      "-DSTM32L422xx",
+      "-IUSB_DEVICE/App",
+      "-IUSB_DEVICE/Target",
+      "-ICore/Inc",
+      "-IDrivers/STM32L4xx_HAL_Driver/Inc",
+      "-IDrivers/STM32L4xx_HAL_Driver/Inc/Legacy",
+      "-IMiddlewares/ST/STM32_USB_Device_Library/Core/Inc",
+      "-IMiddlewares/ST/STM32_USB_Device_Library/Class/HID/Inc",
+      "-IDrivers/CMSIS/Device/ST/STM32L4xx/Include",
+      "-IDrivers/CMSIS/Include",
+      "-I/usr/arm-none-eabi/include",
+      "-Og",
+      "-Wall",
+      "-fdata-sections",
+      "-ffunction-sections",
+      "-g",
+      "-gdwarf-2",
+      "-Wa,-a,-ad,-alms=build/chacha.lst",
+      "-o",
+      "build/chacha.o",
+      "Core/Src/chacha.c"
+    ],
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/chacha.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/chacha.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-c",
+      "-mcpu=cortex-m4",
+      "-mthumb",
+      "-mfpu=fpv4-sp-d16",
+      "-mfloat-abi=hard",
+      "-DUSE_HAL_DRIVER",
+      "-DSTM32L422xx",
+      "-IUSB_DEVICE/App",
+      "-IUSB_DEVICE/Target",
+      "-ICore/Inc",
+      "-IDrivers/STM32L4xx_HAL_Driver/Inc",
+      "-IDrivers/STM32L4xx_HAL_Driver/Inc/Legacy",
+      "-IMiddlewares/ST/STM32_USB_Device_Library/Core/Inc",
+      "-IMiddlewares/ST/STM32_USB_Device_Library/Class/HID/Inc",
+      "-IDrivers/CMSIS/Device/ST/STM32L4xx/Include",
+      "-IDrivers/CMSIS/Include",
+      "-I/usr/arm-none-eabi/include",
+      "-Og",
+      "-Wall",
+      "-fdata-sections",
+      "-ffunction-sections",
+      "-g",
+      "-gdwarf-2",
+      "-Wa,-a,-ad,-alms=build/flash.lst",
+      "-o",
+      "build/flash.o",
+      "Core/Src/flash.c"
+    ],
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/flash.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/flash.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-c",
+      "-mcpu=cortex-m4",
+      "-mthumb",
+      "-mfpu=fpv4-sp-d16",
+      "-mfloat-abi=hard",
+      "-DUSE_HAL_DRIVER",
+      "-DSTM32L422xx",
+      "-IUSB_DEVICE/App",
+      "-IUSB_DEVICE/Target",
+      "-ICore/Inc",
+      "-IDrivers/STM32L4xx_HAL_Driver/Inc",
+      "-IDrivers/STM32L4xx_HAL_Driver/Inc/Legacy",
+      "-IMiddlewares/ST/STM32_USB_Device_Library/Core/Inc",
+      "-IMiddlewares/ST/STM32_USB_Device_Library/Class/HID/Inc",
+      "-IDrivers/CMSIS/Device/ST/STM32L4xx/Include",
+      "-IDrivers/CMSIS/Include",
+      "-I/usr/arm-none-eabi/include",
+      "-Og",
+      "-Wall",
+      "-fdata-sections",
+      "-ffunction-sections",
+      "-g",
+      "-gdwarf-2",
+      "-Wa,-a,-ad,-alms=build/record.lst",
+      "-o",
+      "build/record.o",
+      "Core/Src/record.c"
+    ],
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/record.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/record.o"
   },
   {
     "arguments": [
@@ -625,9 +730,9 @@
       "build/usb_device.o",
       "USB_DEVICE/App/usb_device.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/USB_DEVICE/App/usb_device.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usb_device.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/USB_DEVICE/App/usb_device.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usb_device.o"
   },
   {
     "arguments": [
@@ -660,9 +765,9 @@
       "build/usbd_desc.o",
       "USB_DEVICE/App/usbd_desc.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/USB_DEVICE/App/usbd_desc.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usbd_desc.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/USB_DEVICE/App/usbd_desc.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usbd_desc.o"
   },
   {
     "arguments": [
@@ -695,9 +800,9 @@
       "build/usbd_conf.o",
       "USB_DEVICE/Target/usbd_conf.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/USB_DEVICE/Target/usbd_conf.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usbd_conf.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/USB_DEVICE/Target/usbd_conf.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usbd_conf.o"
   },
   {
     "arguments": [
@@ -730,9 +835,9 @@
       "build/stm32l4xx_hal_pcd.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_pcd.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_pcd.o"
   },
   {
     "arguments": [
@@ -765,9 +870,9 @@
       "build/stm32l4xx_hal_pcd_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_pcd_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_pcd_ex.o"
   },
   {
     "arguments": [
@@ -800,9 +905,9 @@
       "build/stm32l4xx_ll_usb.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_ll_usb.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_ll_usb.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_ll_usb.o"
   },
   {
     "arguments": [
@@ -835,9 +940,9 @@
       "build/stm32l4xx_hal.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal.o"
   },
   {
     "arguments": [
@@ -870,9 +975,9 @@
       "build/stm32l4xx_hal_rcc.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_rcc.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_rcc.o"
   },
   {
     "arguments": [
@@ -905,9 +1010,9 @@
       "build/stm32l4xx_hal_rcc_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_rcc_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_rcc_ex.o"
   },
   {
     "arguments": [
@@ -940,9 +1045,9 @@
       "build/stm32l4xx_hal_flash.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_flash.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_flash.o"
   },
   {
     "arguments": [
@@ -975,9 +1080,9 @@
       "build/stm32l4xx_hal_flash_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_flash_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_flash_ex.o"
   },
   {
     "arguments": [
@@ -1010,9 +1115,9 @@
       "build/stm32l4xx_hal_flash_ramfunc.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_flash_ramfunc.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_flash_ramfunc.o"
   },
   {
     "arguments": [
@@ -1045,9 +1150,9 @@
       "build/stm32l4xx_hal_gpio.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_gpio.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_gpio.o"
   },
   {
     "arguments": [
@@ -1080,9 +1185,9 @@
       "build/stm32l4xx_hal_dma.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_dma.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_dma.o"
   },
   {
     "arguments": [
@@ -1115,9 +1220,9 @@
       "build/stm32l4xx_hal_dma_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_dma_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_dma_ex.o"
   },
   {
     "arguments": [
@@ -1150,9 +1255,9 @@
       "build/stm32l4xx_hal_pwr.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_pwr.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_pwr.o"
   },
   {
     "arguments": [
@@ -1185,9 +1290,9 @@
       "build/stm32l4xx_hal_pwr_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_pwr_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_pwr_ex.o"
   },
   {
     "arguments": [
@@ -1220,9 +1325,9 @@
       "build/stm32l4xx_hal_cortex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_cortex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_cortex.o"
   },
   {
     "arguments": [
@@ -1255,9 +1360,9 @@
       "build/stm32l4xx_hal_exti.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_exti.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_exti.o"
   },
   {
     "arguments": [
@@ -1290,9 +1395,9 @@
       "build/stm32l4xx_hal_i2c.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_i2c.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_i2c.o"
   },
   {
     "arguments": [
@@ -1325,9 +1430,9 @@
       "build/stm32l4xx_hal_i2c_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_i2c_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_i2c_ex.o"
   },
   {
     "arguments": [
@@ -1360,9 +1465,9 @@
       "build/stm32l4xx_hal_rng.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_rng.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_rng.o"
   },
   {
     "arguments": [
@@ -1395,9 +1500,9 @@
       "build/stm32l4xx_hal_tim.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_tim.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_tim.o"
   },
   {
     "arguments": [
@@ -1430,9 +1535,9 @@
       "build/stm32l4xx_hal_tim_ex.o",
       "Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/stm32l4xx_hal_tim_ex.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/stm32l4xx_hal_tim_ex.o"
   },
   {
     "arguments": [
@@ -1465,9 +1570,9 @@
       "build/system_stm32l4xx.o",
       "Core/Src/system_stm32l4xx.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Core/Src/system_stm32l4xx.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/system_stm32l4xx.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Core/Src/system_stm32l4xx.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/system_stm32l4xx.o"
   },
   {
     "arguments": [
@@ -1500,9 +1605,9 @@
       "build/usbd_core.o",
       "Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usbd_core.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usbd_core.o"
   },
   {
     "arguments": [
@@ -1535,9 +1640,9 @@
       "build/usbd_ctlreq.o",
       "Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usbd_ctlreq.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usbd_ctlreq.o"
   },
   {
     "arguments": [
@@ -1570,9 +1675,9 @@
       "build/usbd_ioreq.o",
       "Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usbd_ioreq.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usbd_ioreq.o"
   },
   {
     "arguments": [
@@ -1600,14 +1705,14 @@
       "-ffunction-sections",
       "-g",
       "-gdwarf-2",
-      "-Wa,-a,-ad,-alms=build/usbd_hid.lst",
+      "-Wa,-a,-ad,-alms=build/usbd_hid2.lst",
       "-o",
-      "build/usbd_hid.o",
-      "Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c"
+      "build/usbd_hid2.o",
+      "Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid2.c"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid.c",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/usbd_hid.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/Middlewares/ST/STM32_USB_Device_Library/Class/HID/Src/usbd_hid2.c",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/usbd_hid2.o"
   },
   {
     "arguments": [
@@ -1641,8 +1746,8 @@
       "build/startup_stm32l422xx.o",
       "startup_stm32l422xx.s"
     ],
-    "directory": "/home/saghya/Documents/code/pwmanager2/Firmware",
-    "file": "/home/saghya/Documents/code/pwmanager2/Firmware/startup_stm32l422xx.s",
-    "output": "/home/saghya/Documents/code/pwmanager2/Firmware/build/startup_stm32l422xx.o"
+    "directory": "/home/saghya/Documents/code/passwordManager/Firmware",
+    "file": "/home/saghya/Documents/code/passwordManager/Firmware/startup_stm32l422xx.s",
+    "output": "/home/saghya/Documents/code/passwordManager/Firmware/build/startup_stm32l422xx.o"
   }
 ]
