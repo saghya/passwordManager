@@ -2,7 +2,7 @@
 #define __ENCODER_H
 
 #include "main.h"
-#define ENC_CNT TIM1->CNT
+#define ENC_CNT ((int16_t)TIM1->CNT)
 
 int8_t encoderDelta();
 
