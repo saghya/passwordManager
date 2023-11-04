@@ -16,8 +16,8 @@ typedef struct __attribute__((packed, aligned(8))) {
 
 void create_record(record *rcrd, uint8_t *site, uint8_t *username,
                   uint8_t *password, uint8_t tabnum);
-void save_record(record *rcrd);
-void read_record(record *rcrd);
+void save_record(uint32_t addr, record *rcrd);
+void read_record(uint32_t addr, record *rcrd);
 
 #endif // __RECORD_H
 

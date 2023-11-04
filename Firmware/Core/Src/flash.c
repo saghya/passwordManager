@@ -1,15 +1,42 @@
 #include "flash.h"
+#include "stm32l4xx_hal_flash.h"
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 
 static inline uint32_t getPage(uint32_t address)
 {
     return (address - FIRST_PAGE_ADDR) / FLASH_PAGE_SIZE;
 }
 
-uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint64_t *Data, uint16_t numberofdoublewords)
+uint32_t Flash_Write_Page(uint32_t Address, uint64_t *Data,
+                          uint16_t numberofdoublewords)
+{
+    uint16_t numofbytes        = numberofdoublewords * sizeof(uint64_t);
+    uint32_t page_shift_before = Address % FLASH_PAGE_SIZE;
+    uint32_t StartPageAddress  = Address - page_shift_before;
+    uint32_t EndAddress        = Address + numofbytes;
+    uint32_t page_shift_after =
+        FLASH_PAGE_SIZE - (EndAddress % FLASH_PAGE_SIZE);
+    if (EndAddress - StartPageAddress > 2 * FLASH_PAGE_SIZE) {
+        return -1;
+    }
+    uint8_t buff[2 * FLASH_PAGE_SIZE] = {0};
+    memcpy(buff, (uint8_t *)StartPageAddress, page_shift_before);
+    memcpy(buff + page_shift_before, (uint8_t *)Data, numofbytes);
+    memcpy(buff + page_shift_before + numofbytes, (uint8_t *)EndAddress,
+           page_shift_after);
+
+    return Flash_Write_Data(
+        StartPageAddress, (uint64_t *)buff,
+        (page_shift_before + numofbytes + page_shift_after) / 8);
+}
+
+uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint64_t *Data,
+                          uint16_t numberofdoublewords)
 {
     static FLASH_EraseInitTypeDef EraseInitStruct;
     uint32_t                      PAGEError;
-    int                           sofar = 0;
 
     /* Unlock the Flash to enable the flash control register access
      * *************/
@@ -33,10 +60,10 @@ uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint64_t *Data, uint16_t nu
 
     /* Program the user Flash area doubleword by doubleword*/
 
-    while (sofar < numberofdoublewords) {
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, StartPageAddress, Data[sofar]) == HAL_OK) {
-            StartPageAddress += 8; // use StartPageAddress += 2 for half word and 8 for double word
-            sofar++;
+    for (uint32_t i = 0; i < numberofdoublewords; i++) {
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, StartPageAddress,
+                              Data[i]) == HAL_OK) {
+            StartPageAddress += 8;
         } else {
             /* Error occurred while writing data in Flash memory*/
             return HAL_FLASH_GetError();
@@ -50,7 +77,8 @@ uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint64_t *Data, uint16_t nu
     return 0;
 }
 
-void Flash_Read_Data(uint32_t StartPageAddress, uint64_t *RxBuf, uint16_t numberofdoublewords)
+void Flash_Read_Data(uint32_t StartPageAddress, uint64_t *RxBuf,
+                     uint16_t numberofdoublewords)
 {
     while (1) {
         *RxBuf = *(__IO uint64_t *)StartPageAddress;

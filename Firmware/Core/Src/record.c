@@ -18,16 +18,16 @@ void create_record(record *rcrd, uint8_t *site, uint8_t *username,
     rcrd->tabnum = tabnum;
 }
 
-void save_record(record *rcrd)
+void save_record(uint32_t addr, record *rcrd)
 {
     chacha_init(&ctx, key, nonce);
     chacha_xor(&ctx, (uint8_t*)rcrd, sizeof(record));
-    Flash_Write_Data(FIRST_RECORD_ADDR, (uint64_t *)rcrd, sizeof(record) / 8);
+    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(record) / 8);
 }
 
-void read_record(record *rcrd)
+void read_record(uint32_t addr, record *rcrd)
 {
     chacha_init(&ctx, key, nonce);
-    Flash_Read_Data(FIRST_RECORD_ADDR, (uint64_t *)rcrd, sizeof(record) / 8);
+    Flash_Read_Data(addr, (uint64_t *)rcrd, sizeof(record) / 8);
     chacha_xor(&ctx, (uint8_t*)rcrd, sizeof(record));
 }
