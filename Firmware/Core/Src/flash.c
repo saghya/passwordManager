@@ -69,11 +69,12 @@ uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint64_t *Data, uint16_t nu
 
 void Flash_Read_Data(uint32_t StartPageAddress, uint64_t *RxBuf, uint16_t numberofdoublewords)
 {
+    if (!numberofdoublewords) return;
     while (1) {
         *RxBuf = *(__IO uint64_t *)StartPageAddress;
         StartPageAddress += 8;
         RxBuf++;
-        if (!(numberofdoublewords--))
+        if (!(--numberofdoublewords))
             break;
     }
 }

@@ -1,18 +1,25 @@
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+#include "keyboard.h"
 #include "sites.h"
 #include "page.h"
 #include "encoder.h"
-#include "passwords.h"
 #include "pin.h"
 #include "buttons.h"
+#include "record.h"
 
-char *sites[] = {"facebook", "neptun", "bme",    "google", "moodle",  "spotify",
-                 "teams",    "steam",  "github", "otp",    "netflix", NULL};
-
-volatile uint8_t inSites = 0;
+char            *sites[128] = {0};
+volatile uint8_t inSites    = 0;
 
 void sitesLoop()
 {
+    record *r = FIRST_RECORD_ADDR;
+    for (int i = 0, j = 0; &r[i] < LAST_RECORD_ADDR; i++) {
+        if (r[i].xValid == 0) {
+            sites[j++] = (char *)&(r[i].site);
+        }
+    }
     inSites = 1;
     static Page    page;
     static uint8_t pageInitialized = 0;
@@ -29,7 +36,17 @@ void sitesLoop()
         }
         if (btn2() || e_sw()) {
             if (unlocked) {
-                sendPassword(sites[page.selected_string_idx]);
+                for (int i = 0, cnt = -1; &r[i] < LAST_RECORD_ADDR; i++) {
+                    if (r[i].xValid == 0)
+                        cnt++;
+                    if (cnt == page.selected_string_idx) {
+                        record r1;
+                        read_record((uint32_t)&r[i], &r1);
+                        typeString((char *)r1.username);
+                        typeString((char *)r1.password);
+                        break;
+                    }
+                }
             } else {
                 unlock();
             }
