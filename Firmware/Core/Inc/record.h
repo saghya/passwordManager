@@ -16,10 +16,11 @@ typedef struct __attribute__((packed, aligned(8))) {
     uint8_t password[32];
 } record;
 
-void create_record(record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum);
-void save_record(const record *rcrd);
-void read_record(uint32_t addr, record *rcrd);
-void delete_record(uint32_t addr);
+void     create_record(record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum);
+void     save_record(const record *rcrd);
+void     read_record(uint32_t addr, record *rcrd);
+void     delete_record(uint32_t addr);
+uint32_t delete_all_records();
 
 #endif // __RECORD_H
 
