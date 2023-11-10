@@ -9,13 +9,13 @@
 #include "buttons.h"
 #include "record.h"
 
-char            *sites[128] = {0};
+char            *sites[MAX_NUM_OF_RECORDS] = {0};
 volatile uint8_t inSites    = 0;
 
 void sitesLoop()
 {
-    record *r = FIRST_RECORD_ADDR;
-    for (int i = 0, j = 0; &r[i] < LAST_RECORD_ADDR; i++) {
+    record *r = (record*)FIRST_RECORD_ADDR;
+    for (int i = 0, j = 0; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
         if (r[i].xValid == 0) {
             sites[j++] = (char *)&(r[i].site);
         }
@@ -36,14 +36,17 @@ void sitesLoop()
         }
         if (btn2() || e_sw()) {
             if (unlocked) {
-                for (int i = 0, cnt = -1; &r[i] < LAST_RECORD_ADDR; i++) {
+                for (int i = 0, cnt = -1; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
                     if (r[i].xValid == 0)
                         cnt++;
                     if (cnt == page.selected_string_idx) {
                         record r1;
                         read_record((uint32_t)&r[i], &r1);
                         typeString((char *)r1.username);
+                        for (int i = 0; i < r1.tabnum; i++)
+                            typeString("\t");
                         typeString((char *)r1.password);
+                        typeString("\n");
                         break;
                     }
                 }

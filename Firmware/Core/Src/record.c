@@ -19,9 +19,9 @@ void create_record(record *rcrd, uint8_t *site, uint8_t *username, uint8_t *pass
 
 void save_record(const record *rcrd)
 {
-    record  *r    = FIRST_RECORD_ADDR;
+    record  *r    = (record*)FIRST_RECORD_ADDR;
     uint32_t addr = 0;
-    for (int i = 0; &r[i] < LAST_RECORD_ADDR; i++) {
+    for (int i = 0; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
         if (r[i].xValid) {
             addr = (uint32_t)&r[i];
             break;

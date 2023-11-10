@@ -3,9 +3,10 @@
 
 #include "flash.h"
 
-#define NUM_OF_RECORD_PAGES (32)
-#define FIRST_RECORD_ADDR   (record *)(FIRST_PAGE_ADDR + (NUM_OF_PAGES - NUM_OF_RECORD_PAGES) * FLASH_PAGE_SIZE)
-#define LAST_RECORD_ADDR    (record *)((FIRST_PAGE_ADDR + NUM_OF_PAGES * FLASH_PAGE_SIZE - sizeof(record)))
+#define NUM_OF_RECORD_PAGES ((uint32_t)32)
+#define FIRST_RECORD_ADDR   (FIRST_PAGE_ADDR + (NUM_OF_PAGES - NUM_OF_RECORD_PAGES) * FLASH_PAGE_SIZE)
+#define LAST_RECORD_ADDR    (FIRST_RECORD_ADDR + NUM_OF_RECORD_PAGES * FLASH_PAGE_SIZE - sizeof(record))
+#define MAX_NUM_OF_RECORDS  ((LAST_RECORD_ADDR - FIRST_RECORD_ADDR + sizeof(record)) / sizeof(record))
 
 typedef struct __attribute__((packed, aligned(8))) {
     uint8_t site[32];
