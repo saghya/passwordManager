@@ -79,7 +79,7 @@ Keys HUN_keys[NumberOfKeys] = {
     {'<', 100, MOD_ALT_RIGHT},   {'\0', 0, MOD_NO_MODIFIER},
 };
 
-Keys *keys = &HUN_keys; // keyboard language
+Keys *keys = (Keys*)&HUN_keys; // keyboard language
 
 void write(uint8_t key, uint8_t modifier)
 {
