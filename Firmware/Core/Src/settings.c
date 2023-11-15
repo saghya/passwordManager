@@ -1,21 +1,18 @@
 #include "settings.h"
-#include "page.h"
+#include "screen.h"
 #include "encoder.h"
 #include "buttons.h"
 #include "pin.h"
-
-char *settings[] = {"Keyboard language", "Target device", "Change PIN", NULL};
-char *keyboardlanguages[] = {"HU", "EN", NULL};
-char *devices[]           = {"Windows", "Linux", "Android", "Iphone", NULL};
+#include "record.h"
 
 void setKeyboardLanguage()
 {
+    char          *keyboardlanguages[] = {"HU", "EN", NULL};
     static Page    page;
     static uint8_t pageInitialized = 0;
     if (pageInitialized == 0) { // only init once
         pageInitialized = 1;
-        page            = initPage(&Font_7x10, "Keyboard language:", &Font_7x10,
-                                   keyboardlanguages);
+        page            = initPage(&Font_7x10, "Keyboard language:", &Font_7x10, keyboardlanguages);
     }
     Page page_copy = page;
 
@@ -33,11 +30,12 @@ void setKeyboardLanguage()
 
 void setDevice()
 {
+    char          *devices[] = {"Windows", "Linux", "Android", "Iphone", NULL};
     static Page    page;
     static uint8_t pageInitialized = 0;
     if (pageInitialized == 0) { // only init once
         pageInitialized = 1;
-        page = initPage(&Font_7x10, "Target device:", &Font_7x10, devices);
+        page            = initPage(&Font_7x10, "Target device:", &Font_7x10, devices);
     }
     Page page_copy = page;
 
@@ -55,26 +53,30 @@ void setDevice()
 
 void settingsLoop()
 {
-    static Page    page;
-    static uint8_t pageInitialized = 0;
-    if (pageInitialized == 0) { // only init once
-        pageInitialized = 1;
-        page = initPage(&Font_11x18, "Settings:", &Font_7x10, settings);
-    }
+    enum { KEYBOARD_LANGUAGE, TARGET_DEVICE, CHANGE_PIN, FACTORY_RESET };
+    char *settings[] = {"Keyboard language", "Target device", "Change PIN", "Factory reset", NULL};
+
+    Page page = initPage(&Font_11x18, "Settings:", &Font_7x10, settings);
     while (1) {
         if (btn1()) {
             return;
         }
         if (btn2() || e_sw()) {
             switch (page.selected_string_idx) {
-                case SET_KEYBOARD_LANGUAGE:
+                case KEYBOARD_LANGUAGE:
                     setKeyboardLanguage();
                     break;
-                case SET_DEVICE:
+                case TARGET_DEVICE:
                     setDevice();
                     break;
-                case SET_PIN:
+                case CHANGE_PIN:
                     changePin();
+                    break;
+                case FACTORY_RESET:
+                    if (question() && getPin()) {
+                        delete_all_records();
+                        createUser();
+                    }
                     break;
             }
         }
@@ -82,3 +84,4 @@ void settingsLoop()
         drawPage(&page);
     }
 }
+

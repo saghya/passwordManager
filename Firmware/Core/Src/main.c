@@ -18,14 +18,18 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "led.h"
+#include "stm32l4xx_hal_flash.h"
+#include "stm32l4xx_hal_rng.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ssd1306.h"
-#include "sites.h"
 #include "pin.h"
 #include "menu.h"
+#include "record.h"
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,15 +119,55 @@ int main(void)
     HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_2);      // green led: TIM15->CCR2
     HAL_TIM_Base_Start_IT(&htim16);
     ssd1306_Init();  // initialize the display
-    TIM15->CCR2 = 0; // turn off led
+    LED_Off();
 
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
+
+    //delete_all_records();
+    //record r0[20] = {{.site = "0", .username = "0", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "1", .username = "1", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "2", .username = "2", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "3", .username = "3", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "4", .username = "4", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "5", .username = "5", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "6", .username = "6", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "7", .username = "7", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "8", .username = "8", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "9", .username = "1", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "10", .username = "2", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "11", .username = "3", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "12", .username = "4", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "13", .username = "5", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "14", .username = "7", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "15", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "16", .username = "8", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "17", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "18", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "19", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0}};
+    //for (int i = 0; i < 20; i++) {
+    //    save_record(&r0[i]);
+    //}
+    //for (int i = 0; i < 5; i++ ) {
+    //    delete_record(FIRST_RECORD_ADDR + (rand() % 20) * sizeof(record));
+    //}
+    //record r0[5] = {{.site = "lol", .username = "0", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "xd", .username = "1", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "wow", .username = "2", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "crazy", .username = "3", .password = " 1234 ", .tabnum = 1, .xValid = 0},
+    //                 {.site = "cool", .username = "4", .password = " 1234 ", .tabnum = 1, .xValid = 0}};
+
+    //for (int i = 0; i < 5; i++) {
+    //    save_record(&r0[i]);
+    //}
+
+    uint32_t rand = 0;
+    HAL_RNG_GenerateRandomNumber(&hrng, &rand);
     while (1) {
-        menuLoop(); // never returns
-                    /* USER CODE END WHILE */
+        menuLoop();
+        /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
     }
@@ -141,16 +185,14 @@ void SystemClock_Config(void)
 
     /** Configure the main internal regulator output voltage
      */
-    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) !=
-        HAL_OK) {
+    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK) {
         Error_Handler();
     }
 
     /** Initializes the RCC Oscillators according to the specified parameters
      * in the RCC_OscInitTypeDef structure.
      */
-    RCC_OscInitStruct.OscillatorType =
-        RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_MSI;
+    RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_MSI;
     RCC_OscInitStruct.HSIState            = RCC_HSI_ON;
     RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
     RCC_OscInitStruct.MSIState            = RCC_MSI_ON;
@@ -168,8 +210,7 @@ void SystemClock_Config(void)
 
     /** Initializes the CPU, AHB and APB buses clocks
      */
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
-                                  RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.ClockType      = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -210,8 +251,7 @@ static void MX_I2C1_Init(void)
 
     /** Configure Analogue filter
      */
-    if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) !=
-        HAL_OK) {
+    if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK) {
         Error_Handler();
     }
 
@@ -289,8 +329,7 @@ static void MX_TIM1_Init(void)
     sMasterConfig.MasterOutputTrigger  = TIM_TRGO_RESET;
     sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
     sMasterConfig.MasterSlaveMode      = TIM_MASTERSLAVEMODE_DISABLE;
-    if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) !=
-        HAL_OK) {
+    if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK) {
         Error_Handler();
     }
     /* USER CODE BEGIN TIM1_Init 2 */
@@ -337,8 +376,7 @@ static void MX_TIM15_Init(void)
     }
     sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
     sMasterConfig.MasterSlaveMode     = TIM_MASTERSLAVEMODE_DISABLE;
-    if (HAL_TIMEx_MasterConfigSynchronization(&htim15, &sMasterConfig) !=
-        HAL_OK) {
+    if (HAL_TIMEx_MasterConfigSynchronization(&htim15, &sMasterConfig) != HAL_OK) {
         Error_Handler();
     }
     sConfigOC.OCMode       = TIM_OCMODE_PWM1;
@@ -348,8 +386,7 @@ static void MX_TIM15_Init(void)
     sConfigOC.OCFastMode   = TIM_OCFAST_DISABLE;
     sConfigOC.OCIdleState  = TIM_OCIDLESTATE_RESET;
     sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-    if (HAL_TIM_PWM_ConfigChannel(&htim15, &sConfigOC, TIM_CHANNEL_2) !=
-        HAL_OK) {
+    if (HAL_TIM_PWM_ConfigChannel(&htim15, &sConfigOC, TIM_CHANNEL_2) != HAL_OK) {
         Error_Handler();
     }
     sBreakDeadTimeConfig.OffStateRunMode  = TIM_OSSR_DISABLE;
@@ -359,8 +396,7 @@ static void MX_TIM15_Init(void)
     sBreakDeadTimeConfig.BreakState       = TIM_BREAK_DISABLE;
     sBreakDeadTimeConfig.BreakPolarity    = TIM_BREAKPOLARITY_HIGH;
     sBreakDeadTimeConfig.AutomaticOutput  = TIM_AUTOMATICOUTPUT_DISABLE;
-    if (HAL_TIMEx_ConfigBreakDeadTime(&htim15, &sBreakDeadTimeConfig) !=
-        HAL_OK) {
+    if (HAL_TIMEx_ConfigBreakDeadTime(&htim15, &sBreakDeadTimeConfig) != HAL_OK) {
         Error_Handler();
     }
     /* USER CODE BEGIN TIM15_Init 2 */
@@ -435,8 +471,8 @@ static void MX_GPIO_Init(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim == &htim16 && inSites) { // lock after 32s
-        inSites = 0;                  // back to menu
-        lock();
+        //inSites = 0;                  // back to menu
+        //lock();
     }
 }
 

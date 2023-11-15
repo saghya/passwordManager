@@ -42,11 +42,10 @@ Core/Src/encoder.c \
 Core/Src/keyboard.c \
 Core/Src/led.c \
 Core/Src/menu.c \
-Core/Src/page.c \
+Core/Src/screen.c \
 Core/Src/passwords.c \
 Core/Src/pin.c \
 Core/Src/settings.c \
-Core/Src/sites.c \
 Core/Src/ssd1306.c \
 Core/Src/ssd1306_fonts.c \
 Core/Src/stm32l4xx_it.c \
@@ -56,6 +55,7 @@ Core/Src/sysmem.c \
 Core/Src/chacha.c \
 Core/Src/flash.c \
 Core/Src/record.c \
+Core/Src/sha256.c \
 USB_DEVICE/App/usb_device.c \
 USB_DEVICE/App/usbd_desc.c \
 USB_DEVICE/Target/usbd_conf.c \

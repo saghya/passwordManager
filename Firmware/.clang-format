@@ -8,5 +8,5 @@ AlignTrailingComments: true
 IndentWidth: 4
 BreakBeforeBraces: Linux
 AllowShortIfStatementsOnASingleLine: false
-ColumnLimit: 80
+ColumnLimit: 130
 IndentCaseLabels: true

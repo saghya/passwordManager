@@ -1,28 +1,31 @@
 #include "menu.h"
-#include "page.h"
+#include "screen.h"
 #include "encoder.h"
 #include "buttons.h"
 #include "pin.h"
-#include "sites.h"
 #include "settings.h"
+#include "record.h"
 
-char *menus[] = {"Sites", "Settings", NULL};
+enum { SITES, RECORDS, SETTINGS };
+char *menus[] = {"Sites", "Records", "Settings", NULL};
 
 void menuLoop()
-{ // newer returns
+{
     Page page = initPage(&Font_11x18, "PW Manager", &Font_7x10, menus);
-    while (1) {
+    getPin();
+    while (unlocked) {
         if (btn1()) {
-            //lock();
+            lock();
         }
         if (btn2() || e_sw()) {
             switch (page.selected_string_idx) {
-                case M_SITES:
-                    if (unlock()) {
-                        sitesLoop();
-                    }
+                case SITES:
+                    sitesLoop();
                     break;
-                case M_SETTINGS:
+                case RECORDS:
+                    recordsLoop();
+                    break;
+                case SETTINGS:
                     settingsLoop();
                     break;
             }
@@ -31,3 +34,4 @@ void menuLoop()
         drawPage(&page);
     }
 }
+

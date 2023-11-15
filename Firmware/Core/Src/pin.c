@@ -1,11 +1,15 @@
 #include <stdlib.h>
 #include <string.h>
+#include "flash.h"
+#include "screen.h"
 #include "pin.h"
-#include "ssd1306.h"
-#include "ssd1306_fonts.h"
 #include "encoder.h"
 #include "buttons.h"
 #include "led.h"
+#include "sha256.h"
+#include "stm32l4xx_hal_rng.h"
+
+extern RNG_HandleTypeDef hrng;
 
 int8_t  pincode[DIGITS] = {1, 0, 0, 0, 0, 0};
 uint8_t unlocked        = 0;
@@ -26,7 +30,7 @@ void setDigits(int8_t *pin, uint8_t *selected)
         *selected = (*selected + 1) % DIGITS;
     }
 
-    pin[*selected] += -encoderDelta();
+    pin[*selected] += encoderDelta();
     // handle overflow
     if (pin[*selected] > 9) {
         pin[*selected] = 0;
@@ -37,7 +41,6 @@ void setDigits(int8_t *pin, uint8_t *selected)
 
 void drawDigits(int8_t *pin, uint8_t selected)
 {
-
     FontDef digitFont = Font_16x24;
     uint8_t x, y;
     for (int i = 0; i < DIGITS; i++) {
@@ -45,11 +48,15 @@ void drawDigits(int8_t *pin, uint8_t selected)
         y = (SSD1306_HEIGHT - digitFont.height) / 2;
         ssd1306_SetCursor(x, y);
         //ssd1306_WriteChar('0' + pin[i], digitFont, i == selected ? Black : White);
-        ssd1306_WriteChar(i == selected ? '0' + pin[i] : '*', digitFont,
-                          i == selected ? Black : White);
+        ssd1306_WriteChar(i == selected ? '0' + pin[i] : '*', digitFont, i == selected ? Black : White);
     }
 
     ssd1306_UpdateScreen();
+}
+
+static inline void drawPin(int8_t *pin, uint8_t *selected) {
+    setDigits(pin, selected);
+    drawDigits(pin, *selected);
 }
 
 void changePin()
@@ -60,7 +67,7 @@ void changePin()
     uint8_t flag            = 1;
 
     ssd1306_Fill(Black); // clear screen
-    if (!unlock()) {
+    if (!getPin()) {
         return;
     }
     while (1) {
@@ -76,29 +83,23 @@ void changePin()
                 flag = 0;
                 continue;
             }
-            ssd1306_SetCursor(0, (SSD1306_HEIGHT - Font_11x18.height) /
-                                     2); // center
             if (checkPin(newpin1, newpin2)) {
                 memcpy(pincode, newpin1, sizeof(pincode));
-                ssd1306_WriteString("New PIN set", Font_11x18, Black);
-                ssd1306_UpdateScreen();
-                HAL_Delay(1000);
+                sendStatus(&Font_11x18, "New PIN set");
                 lock();
                 return;
             } else {
                 memset(newpin1, 0, sizeof(newpin1));
                 memset(newpin2, 0, sizeof(newpin2));
                 flag = 1;
-                ssd1306_WriteString("PINs don't match", Font_7x10, Black);
-                ssd1306_UpdateScreen();
-                HAL_Delay(1000);
+                sendStatus(&Font_7x10, "PINs don't match");
             }
         }
         ssd1306_SetCursor(0, 0);
-        ssd1306_WriteString(flag ? "Enter new PIN:" : "Enter again:", Font_7x10,
-                            Black);
-        setDigits(flag ? newpin1 : newpin2, &selectedDigit);
-        drawDigits(flag ? newpin1 : newpin2, selectedDigit);
+        ssd1306_WriteString(flag ? "Enter new PIN:" : "Enter again:", Font_7x10, Black);
+        //setDigits(flag ? newpin1 : newpin2, &selectedDigit);
+        //drawDigits(flag ? newpin1 : newpin2, selectedDigit);
+        drawPin(flag ? newpin1 : newpin2, &selectedDigit);
     }
 }
 
@@ -108,7 +109,7 @@ void lock()
     LED_Off();
 }
 
-uint8_t unlock()
+uint8_t getPin()
 {
     int8_t pinFromUser[DIGITS] = {0};
     ssd1306_Fill(Black); // clear screen
@@ -129,7 +130,29 @@ uint8_t unlock()
             selectedDigit = 0;
         }
 
-        setDigits(pinFromUser, &selectedDigit);
-        drawDigits(pinFromUser, selectedDigit);
+        //setDigits(pinFromUser, &selectedDigit);
+        //drawDigits(pinFromUser, selectedDigit);
+        drawPin(pinFromUser, &selectedDigit);
     }
 }
+
+void createUser()
+{
+    UserData   u = {0};
+    SHA256_CTX ctx;
+
+    sha256_init(&ctx);
+    //sha256_update(&ctx, (BYTE *)pw, strlen(pw));
+    sha256_final(&ctx, (BYTE *)u.hashedPW);
+
+    for (int i = 0; i < sizeof(u.keyNonce) / 4; i++) {
+        HAL_RNG_GenerateRandomNumber(&hrng, &u.keyNonce[i]);
+        HAL_RNG_GenerateRandomNumber(&hrng, &u.recordNonce[i]);
+    }
+
+    for (int i = 0; i < sizeof(u.recordKey) / 4; i++) {
+        HAL_RNG_GenerateRandomNumber(&hrng, &u.recordKey[i]);
+    }
+
+}
+
