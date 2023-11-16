@@ -126,7 +126,7 @@ int main(void)
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
-        menuLoop();
+        MainMenu_Loop();
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
@@ -469,3 +469,4 @@ void assert_failed(uint8_t *file, uint32_t line)
     /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+

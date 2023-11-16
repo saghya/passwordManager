@@ -30,8 +30,8 @@ typedef struct {
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern keyboardHID        keyboardhid;
-extern Keys              US_keys[];
-extern Keys              HU_keys[];
+extern Keys               US_keys[];
+extern Keys               HU_keys[];
 
 void typeString(char *str);
 

@@ -1566,3 +1566,4 @@ FontDef Font_16x26 = {16, 26, Font16x26};
 #ifdef SSD1306_INCLUDE_FONT_16x24
 FontDef Font_16x24 = {16, 24, Font16x24};
 #endif
+

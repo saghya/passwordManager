@@ -16,9 +16,9 @@ typedef struct __attribute__((packed, aligned(8))) {
     uint8_t  xValid;
 } UserData;
 
-void createUser();
-uint8_t readUserData(uint32_t addr, UserData *u);
-uint8_t saveUserData(UserData *u);
+void    UserData_Create();
+uint8_t UserData_Save(UserData *u);
+uint8_t UserData_Read(uint32_t addr, UserData *u);
 
 #endif // __USER_DATA_H
 

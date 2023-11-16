@@ -14,23 +14,7 @@
 
 int8_t pin[DIGITS] = {0};
 
-uint8_t checkPin()
-{
-    uint8_t    buff[32] = {0};
-    SHA256_CTX ctx;
-    sha256_init(&ctx);
-    sha256_update(&ctx, (BYTE *)pin, DIGITS);
-    sha256_final(&ctx, (BYTE *)buff);
-    for (int i = 0; i < sizeof(buff); i++) {
-        if (buff[i] != ((UserData *)USER_DATA_ADDR)->hashedPW[i]) {
-            memset(pin, 0, DIGITS);
-            return 0;
-        }
-    }
-    return 1;
-}
-
-void setDigits(int8_t *pin, uint8_t *selected)
+static inline void setDigits(int8_t *pin, uint8_t *selected)
 {
     if (e_sw()) {
         *selected = (*selected + 1) % DIGITS;
@@ -45,7 +29,7 @@ void setDigits(int8_t *pin, uint8_t *selected)
     }
 }
 
-void drawDigits(int8_t *pin, uint8_t selected)
+static inline void drawDigits(int8_t *pin, uint8_t selected)
 {
     FontDef digitFont = Font_16x24;
     uint8_t x, y;
@@ -66,7 +50,7 @@ static inline void drawPin(int8_t *pin, uint8_t *selected)
     drawDigits(pin, *selected);
 }
 
-uint8_t getPin()
+uint8_t PIN_Get()
 {
     ssd1306_Fill(Black); // clear screen
     uint8_t selectedDigit = 0;
@@ -81,19 +65,7 @@ uint8_t getPin()
     }
 }
 
-uint8_t unlock()
-{
-    while (!checkPin()) {
-        if (btn1()) {
-            return 0;
-        }
-        getPin();
-    }
-    LED_On();
-    return 1;
-}
-
-uint8_t setPin()
+uint8_t PIN_Set()
 {
     int8_t  newpin1[DIGITS] = {0};
     int8_t  newpin2[DIGITS] = {0};
@@ -114,13 +86,13 @@ uint8_t setPin()
             }
             if (!strncmp((char *)newpin1, (char *)newpin2, DIGITS)) {
                 memcpy(pin, newpin1, DIGITS);
-                sendStatus(&Font_11x18, "New PIN set");
+                Screen_SendStatus(&Font_11x18, "New PIN set");
                 return 1;
             } else {
                 memset(newpin1, 0, sizeof(newpin1));
                 memset(newpin2, 0, sizeof(newpin2));
                 flag = 1;
-                sendStatus(&Font_7x10, "PINs don't match");
+                Screen_SendStatus(&Font_7x10, "PINs don't match");
             }
         }
         ssd1306_SetCursor(0, 0);
@@ -129,16 +101,44 @@ uint8_t setPin()
     }
 }
 
-uint8_t changePin()
+uint8_t PIN_Check()
+{
+    uint8_t    buff[32] = {0};
+    SHA256_CTX ctx;
+    sha256_init(&ctx);
+    sha256_update(&ctx, (BYTE *)pin, DIGITS);
+    sha256_final(&ctx, (BYTE *)buff);
+    for (int i = 0; i < sizeof(buff); i++) {
+        if (buff[i] != ((UserData *)USER_DATA_ADDR)->hashedPW[i]) {
+            memset(pin, 0, DIGITS);
+            return 0;
+        }
+    }
+    return 1;
+}
+
+uint8_t PIN_Change()
 {
     UserData u = {0};
-    if (!readUserData(USER_DATA_ADDR, &u))
+    if (!UserData_Read(USER_DATA_ADDR, &u))
         return 0;
-    if (!setPin()) {
+    if (!PIN_Set()) {
         return 1;
     }
-    if (!saveUserData(&u))
+    if (!UserData_Save(&u))
         return 0;
+    return 1;
+}
+
+uint8_t unlock()
+{
+    while (!PIN_Check()) {
+        if (btn1()) {
+            return 0;
+        }
+        PIN_Get();
+    }
+    LED_On();
     return 1;
 }
 

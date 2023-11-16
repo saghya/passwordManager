@@ -9,9 +9,9 @@
 enum { SITES, RECORDS, SETTINGS };
 char *menus[] = {"Sites", "Records", "Settings", NULL};
 
-void menuLoop()
+void MainMenu_Loop()
 {
-    Page page = initPage(&Font_11x18, "PW Manager", &Font_7x10, menus);
+    Page page = Screen_PageInit(&Font_11x18, "PW Manager", &Font_7x10, menus);
     while (unlock()) {
         if (btn1()) {
             lock();
@@ -20,18 +20,18 @@ void menuLoop()
         if (btn2() || e_sw()) {
             switch (page.selected_string_idx) {
                 case SITES:
-                    sitesLoop();
+                    Record_SitesLoop();
                     break;
                 case RECORDS:
-                    recordsLoop();
+                    Record_MenuLoop();
                     break;
                 case SETTINGS:
-                    settingsLoop();
+                    Settings_Loop();
                     break;
             }
         }
 
-        drawPage(&page);
+        Screen_PageDraw(&page);
     }
 }
 

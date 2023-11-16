@@ -11,77 +11,34 @@
 #include "stm32l4xx_hal.h"
 #include "userdata.h"
 
+static inline void    setChar(char *str, uint8_t *selected);
+static void           drawChars(char *str, uint8_t selected);
+static uint8_t        modifyString(char *title, char str[STR_LEN]);
+static inline uint8_t readSites();
+static int32_t        findFirstFreeRecordIdx(const Page *page);
+static uint8_t        saveRecordAt(uint32_t addr, Record *rcrd);
+static uint8_t        editRecordLoop(Record *rec);
+static inline uint8_t newRecordLoop();
+static uint8_t        modifyRecordLoop();
+static uint8_t        deleteRecordLoop();
+
 static chacha_context ctx;
 static char          *sites[MAX_NUM_OF_RECORDS] = {0};
-static record        *r                         = (record *)FIRST_RECORD_ADDR;
+static Record        *r                         = (Record *)FIRST_RECORD_ADDR;
 
-static inline void readSites()
+void Record_Create(Record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum)
 {
-    memset(sites, 0, sizeof(sites));
-    for (int i = 0, j = 0; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
-        if (r[i].xValid == 0) {
-            sites[j++] = (char *)&(r[i].site);
-        }
-    }
-}
-
-static inline int32_t findRecordIdx(const Page *page)
-{
-    for (int i = 0, cnt = -1; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
-        if (r[i].xValid == 0)
-            cnt++;
-        if (cnt == page->selected_string_idx) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void sitesLoop()
-{
-    readSites();
-    Page page = initPage(&Font_11x18, "Sites", &Font_7x10, sites);
-
-    while (1) {
-        if (btn1()) {
-            return;
-        }
-        if (btn2() || e_sw()) {
-            //for (int i = 0, cnt = -1; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
-            //    if (r[i].xValid == 0)
-            //        cnt++;
-            //    if (cnt == page.selected_string_idx) {
-            //        if (!typeRecord((uint32_t)&r[i])) {
-            //            return 0;
-            //        }
-            //        break;
-            //    }
-            //}
-            int rIdx = findRecordIdx(&page);
-            if (rIdx < 0)
-                return;
-            if (!typeRecord((uint32_t)&r[rIdx])) {
-                return;
-            }
-        }
-
-        drawPage(&page);
-    }
-}
-
-void createRecord(record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum)
-{
-    memset(rcrd, 0, sizeof(record));
+    memset(rcrd, 0, sizeof(Record));
     memcpy(rcrd->site, site, strlen((char *)site));
     memcpy(rcrd->username, username, strlen((char *)username));
     memcpy(rcrd->password, password, strlen((char *)password));
     rcrd->tabnum = tabnum;
 }
 
-uint8_t saveRecord(const record *rcrd)
+uint8_t Record_Save(const Record *rcrd)
 {
     uint32_t addr = 0;
-    record  *r    = (record *)FIRST_RECORD_ADDR;
+    Record  *r    = (Record *)FIRST_RECORD_ADDR;
     UserData u    = {0};
 
     for (int i = 0; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
@@ -91,38 +48,24 @@ uint8_t saveRecord(const record *rcrd)
         }
     }
 
-    if (!addr || !unlock() || !readUserData(USER_DATA_ADDR, &u))
+    if (!addr || !unlock() || !UserData_Read(USER_DATA_ADDR, &u))
         return 0;
 
     chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
     chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
     chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
-    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(record) / 8);
-    sendStatus(&Font_7x10, "Record saved");
+    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(Record) / 8);
+    Screen_SendStatus(&Font_7x10, "Record saved");
     return 1;
 }
 
-uint8_t saveRecordAt(uint32_t addr, record *rcrd)
+uint8_t Record_Read(uint32_t addr, Record *rcrd)
 {
     UserData u = {0};
-    if (!addr || !unlock() || !readUserData(USER_DATA_ADDR, &u))
-        return 1;
-
-    chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
-    chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
-    chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
-    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(record) / 8);
-    sendStatus(&Font_7x10, "Record saved");
-    return 0;
-}
-
-uint8_t readRecord(uint32_t addr, record *rcrd)
-{
-    UserData u = {0};
-    if (addr < FIRST_RECORD_ADDR || addr > LAST_RECORD_ADDR || !readUserData(USER_DATA_ADDR, &u))
+    if (addr < FIRST_RECORD_ADDR || addr > LAST_RECORD_ADDR || !UserData_Read(USER_DATA_ADDR, &u))
         return 0;
 
-    Flash_Read_Data(addr, (uint64_t *)rcrd, sizeof(record) / 8);
+    Flash_Read_Data(addr, (uint64_t *)rcrd, sizeof(Record) / 8);
 
     chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
     chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
@@ -130,31 +73,31 @@ uint8_t readRecord(uint32_t addr, record *rcrd)
     return 1;
 }
 
-uint8_t typeRecord(uint32_t addr)
+uint8_t Record_Type(uint32_t addr)
 {
-    record r = {0};
-    if (!readRecord(addr, &r))
+    Record r = {0};
+    if (!Record_Read(addr, &r))
         return 0;
     typeString((char *)r.username);
     for (int i = 0; i < r.tabnum; i++)
         typeString("\t");
     typeString((char *)r.password);
     typeString("\n");
-    memset(&r, 0x00, sizeof(record));
+    memset(&r, 0x00, sizeof(Record));
     return 1;
 }
 
-uint8_t deleteRecord(uint32_t addr)
+uint8_t Record_Delete(uint32_t addr)
 {
     if (!unlock())
         return 1;
-    record r = {.site = {0}, .tabnum = 0, .xValid = 1, .username = {0}, .password = {0}};
-    Flash_Write_Page(addr, (uint64_t *)&r, sizeof(record) / 8);
-    sendStatus(&Font_7x10, "Record deleted");
+    Record r = {.site = {0}, .tabnum = 0, .xValid = 1, .username = {0}, .password = {0}};
+    Flash_Write_Page(addr, (uint64_t *)&r, sizeof(Record) / 8);
+    Screen_SendStatus(&Font_7x10, "Record deleted");
     return 0;
 }
 
-uint8_t deleteAllRecords()
+uint8_t Record_DeleteAll()
 {
     static FLASH_EraseInitTypeDef EraseInitStruct;
     uint32_t                      PAGEError;
@@ -177,7 +120,60 @@ uint8_t deleteAllRecords()
     return 1;
 }
 
-void setChar(char *str, uint8_t *selected)
+void Record_SitesLoop()
+{
+    if (!readSites()) {
+        return;
+    }
+    Page page = Screen_PageInit(&Font_11x18, "Sites", &Font_7x10, sites);
+
+    while (unlock()) {
+        if (btn1()) {
+            return;
+        }
+        if (btn2() || e_sw()) {
+            int rIdx = findFirstFreeRecordIdx(&page);
+            if (rIdx < 0)
+                return;
+            if (!Record_Type((uint32_t)&r[rIdx])) {
+                return;
+            }
+        }
+
+        Screen_PageDraw(&page);
+    }
+}
+
+void Record_MenuLoop()
+{
+    enum { NEW, MODIFY, DELETE };
+    char *m[]  = {"New", "Modify", "Delete", NULL};
+    Page  page = Screen_PageInit(&Font_11x18, "Records", &Font_7x10, m);
+    while (unlock()) {
+        if (btn1()) {
+            return;
+        }
+        if (btn2() || e_sw()) {
+            switch (page.selected_string_idx) {
+                case NEW:
+                    newRecordLoop();
+                    break;
+                case MODIFY:
+                    modifyRecordLoop();
+                    break;
+                case DELETE:
+                    deleteRecordLoop();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        Screen_PageDraw(&page);
+    }
+}
+
+static inline void setChar(char *str, uint8_t *selected)
 {
     if (e_sw()) {
         *selected = (*selected + 1) % STR_LEN;
@@ -195,7 +191,7 @@ void setChar(char *str, uint8_t *selected)
     }
 }
 
-void drawChars(char *str, uint8_t selected)
+static void drawChars(char *str, uint8_t selected)
 {
     FontDef charFont = Font_7x10;
     uint8_t x, y;
@@ -211,7 +207,7 @@ void drawChars(char *str, uint8_t selected)
     ssd1306_UpdateScreen();
 }
 
-uint8_t modifyString(char *title, char str[STR_LEN])
+static uint8_t modifyString(char *title, char str[STR_LEN])
 {
     FontDef font         = Font_11x18;
     uint8_t selectedChar = 0;
@@ -221,7 +217,7 @@ uint8_t modifyString(char *title, char str[STR_LEN])
     char str2[STR_LEN] = {0};
     strcpy(str2, str);
 
-    while (1) {
+    while (unlock()) {
         if (btn1()) {
             memset(str2, 0, STR_LEN);
             return 0;
@@ -233,16 +229,58 @@ uint8_t modifyString(char *title, char str[STR_LEN])
         setChar(str2, &selectedChar);
         drawChars(str2, selectedChar);
     }
+    return 0;
 }
 
-uint8_t editRecordLoop(record *rec)
+static inline uint8_t readSites()
+{
+    memset(sites, 0, sizeof(sites));
+    for (int i = 0, j = 0; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
+        if (r[i].xValid == 0) {
+            sites[j++] = (char *)&(r[i].site);
+        }
+    }
+    if (sites[0] == NULL) {
+        Screen_SendStatus(&Font_7x10, "No saved record");
+        return 0;
+    }
+    return 1;
+}
+
+static int32_t findFirstFreeRecordIdx(const Page *page)
+{
+    for (int i = 0, cnt = -1; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
+        if (r[i].xValid == 0)
+            cnt++;
+        if (cnt == page->selected_string_idx) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static uint8_t saveRecordAt(uint32_t addr, Record *rcrd)
+{
+    UserData u = {0};
+    if (!addr || !unlock() || !UserData_Read(USER_DATA_ADDR, &u))
+        return 1;
+
+    chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
+    chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
+    chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
+    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(Record) / 8);
+    Screen_SendStatus(&Font_7x10, "Record saved");
+    return 0;
+}
+
+static uint8_t editRecordLoop(Record *rec)
 {
     enum { SITE, USERNAME, PASSWORD, SAVE };
     char   *m[]  = {"Site", "Username", "Password", "Save", NULL};
-    Page    page = initPage(&Font_11x18, "Edit record", &Font_7x10, m);
+    Page    page = Screen_PageInit(&Font_11x18, "Edit record", &Font_7x10, m);
     uint8_t next = 0;
 
-    while (1) {
+    while (unlock()) {
         if (btn1()) {
             return 0;
         }
@@ -258,7 +296,7 @@ uint8_t editRecordLoop(record *rec)
                     next = modifyString("Password:", (char *)&rec->password);
                     break;
                 case SAVE:
-                    if (rec->site[0] && question()) {
+                    if (rec->site[0] && Screen_Question()) {
                         return 1;
                     }
                     break;
@@ -267,90 +305,67 @@ uint8_t editRecordLoop(record *rec)
             }
             page.selected_row_idx += next;
         }
-        drawPage(&page);
+        Screen_PageDraw(&page);
     }
+    return 0;
 }
 
-uint8_t newLoop()
+static inline uint8_t newRecordLoop()
 {
-    record rec = {0};
+    Record rec = {0};
     rec.tabnum = 1;
-    if (unlock() && editRecordLoop(&rec) && saveRecord(&rec)) {
+    if (unlock() && editRecordLoop(&rec) && Record_Save(&rec)) {
         return 1;
     }
     return 0;
 }
 
-uint8_t modifyLoop()
+static uint8_t modifyRecordLoop()
 {
-    readSites();
-    Page page = initPage(&Font_11x18, "Modify", &Font_7x10, sites);
+    if (!readSites())
+        return 1;
+    Page page = Screen_PageInit(&Font_11x18, "Modify", &Font_7x10, sites);
 
-    while (1) {
+    while (unlock()) {
         if (btn1()) {
             return 1;
         }
         if (btn2() || e_sw()) {
-            int    rIdx = findRecordIdx(&page);
-            record rec  = {0};
-            if (rIdx < 0 || !readRecord((uint32_t)&r[rIdx], &rec))
+            int    rIdx = findFirstFreeRecordIdx(&page);
+            Record rec  = {0};
+            if (rIdx < 0 || !Record_Read((uint32_t)&r[rIdx], &rec))
                 return 0;
             if (editRecordLoop(&rec)) {
                 if (!saveRecordAt((uint32_t)&r[rIdx], &rec))
                     return 0;
             }
         }
-        drawPage(&page);
+        Screen_PageDraw(&page);
     }
+    return 1;
 }
 
-uint8_t deleteLoop()
+static uint8_t deleteRecordLoop()
 {
-    readSites();
-    Page page = initPage(&Font_11x18, "Delete", &Font_7x10, sites);
+    if (!readSites()) {
+        return 1;
+    }
+    Page page = Screen_PageInit(&Font_11x18, "Delete", &Font_7x10, sites);
 
-    while (1) {
+    while (unlock()) {
         if (btn1()) {
             return 1;
         }
         if (btn2() || e_sw()) {
-            int rIdx = findRecordIdx(&page);
+            int rIdx = findFirstFreeRecordIdx(&page);
             if (rIdx < 0)
                 return 0;
-            if (question()) {
-                return deleteRecord((uint32_t)&r[rIdx]);
+            if (Screen_Question()) {
+                return Record_Delete((uint32_t)&r[rIdx]);
             }
         }
-        drawPage(&page);
+        Screen_PageDraw(&page);
     }
-}
-
-void recordsLoop()
-{
-    enum { NEW, MODIFY, DELETE };
-    char *m[]  = {"New", "Modify", "Delete", NULL};
-    Page  page = initPage(&Font_11x18, "Records", &Font_7x10, m);
-    while (1) {
-        if (btn1()) {
-            return;
-        }
-        if (btn2() || e_sw()) {
-            switch (page.selected_string_idx) {
-                case NEW:
-                    newLoop();
-                    break;
-                case MODIFY:
-                    modifyLoop();
-                    break;
-                case DELETE:
-                    deleteLoop();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        drawPage(&page);
-    }
+    return 1;
 }
 

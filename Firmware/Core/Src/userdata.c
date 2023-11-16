@@ -8,7 +8,33 @@
 
 extern RNG_HandleTypeDef hrng;
 
-uint8_t saveUserData(UserData *u)
+void UserData_Create()
+{
+    UserData   u = {0};
+    SHA256_CTX ctx;
+
+    while (!PIN_Set()) {
+        Screen_SendStatus(&Font_7x10, "PIN is required");
+    }
+
+    sha256_init(&ctx);
+    sha256_update(&ctx, (BYTE *)pin, DIGITS);
+    sha256_final(&ctx, (BYTE *)u.hashedPW);
+
+    for (int i = 0; i < sizeof(u.keyNonce) / 4; i++) {
+        HAL_RNG_GenerateRandomNumber(&hrng, &u.keyNonce[i]);
+        HAL_RNG_GenerateRandomNumber(&hrng, &u.recordNonce[i]);
+    }
+
+    for (int i = 0; i < sizeof(u.recordKey) / 4; i++) {
+        HAL_RNG_GenerateRandomNumber(&hrng, &u.recordKey[i]);
+    }
+    u.keyboard = HU_keys;
+
+    UserData_Save(&u);
+}
+
+uint8_t UserData_Save(UserData *u)
 {
     uint8_t        key[32] = {0};
     chacha_context chacha_ctx;
@@ -27,40 +53,14 @@ uint8_t saveUserData(UserData *u)
     return 1;
 }
 
-void createUser()
-{
-    UserData   u = {0};
-    SHA256_CTX ctx;
-
-    while (!setPin()) {
-        sendStatus(&Font_7x10, "PIN is required");
-    }
-
-    sha256_init(&ctx);
-    sha256_update(&ctx, (BYTE *)pin, DIGITS);
-    sha256_final(&ctx, (BYTE *)u.hashedPW);
-
-    for (int i = 0; i < sizeof(u.keyNonce) / 4; i++) {
-        HAL_RNG_GenerateRandomNumber(&hrng, &u.keyNonce[i]);
-        HAL_RNG_GenerateRandomNumber(&hrng, &u.recordNonce[i]);
-    }
-
-    for (int i = 0; i < sizeof(u.recordKey) / 4; i++) {
-        HAL_RNG_GenerateRandomNumber(&hrng, &u.recordKey[i]);
-    }
-    u.keyboard = HU_keys;
-
-    saveUserData(&u);
-}
-
-uint8_t readUserData(uint32_t addr, UserData *u)
+uint8_t UserData_Read(uint32_t addr, UserData *u)
 {
     uint8_t        key[32] = {0};
     chacha_context ctx;
 
     if (!unlock())
         return 0;
-    memcpy(u, (uint8_t*)USER_DATA_ADDR, sizeof(UserData));
+    memcpy(u, (uint8_t *)USER_DATA_ADDR, sizeof(UserData));
 
     memcpy(key, pin, DIGITS);
     chacha_init(&ctx, key, (uint8_t *)u->keyNonce);

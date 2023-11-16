@@ -5,7 +5,7 @@
 
 uint8_t rows_indent = 5;
 
-Page initPage(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[])
+Page Screen_PageInit(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[])
 {
     Page page = {0};
 
@@ -37,7 +37,7 @@ Page initPage(FontDef *title_font, char *title_str, FontDef *rows_font, char *ro
     return page;
 }
 
-void drawPage(Page *page)
+void Screen_PageDraw(Page *page)
 {
     page->selected_row_idx += encoderDelta();
 
@@ -79,7 +79,7 @@ void drawPage(Page *page)
     ssd1306_UpdateScreen();
 }
 
-void sendStatus(FontDef *font, char *str)
+void Screen_SendStatus(FontDef *font, char *str)
 {
     ssd1306_Fill(Black);
     ssd1306_SetCursor((SSD1306_WIDTH - font->width * strlen(str)) / 2, (SSD1306_HEIGHT - font->height) / 2); // center
@@ -88,11 +88,11 @@ void sendStatus(FontDef *font, char *str)
     HAL_Delay(1000);
 }
 
-uint8_t question()
+uint8_t Screen_Question()
 {
     enum { NO, YES };
     char *options[] = {"no", "yes", NULL};
-    Page  page      = initPage(&Font_7x10, "Are you sure?", &Font_7x10, options);
+    Page  page      = Screen_PageInit(&Font_7x10, "Are you sure?", &Font_7x10, options);
     while (1) {
         if (btn1()) {
             return 0;
@@ -105,7 +105,7 @@ uint8_t question()
                     return 0;
             }
         }
-        drawPage(&page);
+        Screen_PageDraw(&page);
     }
 }
 

@@ -7,3 +7,4 @@
 int8_t encoderDelta();
 
 #endif // __ENCODER_H
+

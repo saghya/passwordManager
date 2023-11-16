@@ -12,15 +12,13 @@ void ssd1306_Reset(void)
 // Send a byte to the command register
 void ssd1306_WriteCommand(uint8_t byte)
 {
-    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x00, 1, &byte, 1,
-                      HAL_MAX_DELAY);
+    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x00, 1, &byte, 1, HAL_MAX_DELAY);
 }
 
 // Send data
 void ssd1306_WriteData(uint8_t *buffer, size_t buff_size)
 {
-    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x40, 1, buffer,
-                      buff_size, HAL_MAX_DELAY);
+    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x40, 1, buffer, buff_size, HAL_MAX_DELAY);
 }
 
 #elif defined(SSD1306_USE_SPI)
@@ -53,7 +51,7 @@ void ssd1306_WriteCommand(uint8_t byte)
 void ssd1306_WriteData(uint8_t *buffer, size_t buff_size)
 {
     HAL_GPIO_WritePin(SSD1306_CS_Port, SSD1306_CS_Pin,
-                      GPIO_PIN_RESET); // select OLED
+                      GPIO_PIN_RESET);                                // select OLED
     HAL_GPIO_WritePin(SSD1306_DC_Port, SSD1306_DC_Pin, GPIO_PIN_SET); // data
     HAL_SPI_Transmit(&SSD1306_SPI_PORT, buffer, buff_size, HAL_MAX_DELAY);
     HAL_GPIO_WritePin(SSD1306_CS_Port, SSD1306_CS_Pin,
@@ -94,12 +92,10 @@ void ssd1306_Init(void)
     ssd1306_SetDisplayOn(0); //display off
 
     ssd1306_WriteCommand(0x20); //Set Memory Addressing Mode
-    ssd1306_WriteCommand(
-        0x00); // 00b,Horizontal Addressing Mode; 01b,Vertical Addressing Mode;
-               // 10b,Page Addressing Mode (RESET); 11b,Invalid
+    ssd1306_WriteCommand(0x00); // 00b,Horizontal Addressing Mode; 01b,Vertical Addressing Mode;
+                                // 10b,Page Addressing Mode (RESET); 11b,Invalid
 
-    ssd1306_WriteCommand(
-        0xB0); //Set Page Start Address for Page Addressing Mode,0-7
+    ssd1306_WriteCommand(0xB0); //Set Page Start Address for Page Addressing Mode,0-7
 
 #ifdef SSD1306_MIRROR_VERT
     ssd1306_WriteCommand(0xC0); // Mirror vertically
@@ -144,14 +140,12 @@ void ssd1306_Init(void)
 #error "Only 32, 64, or 128 lines of height are supported!"
 #endif
 
-    ssd1306_WriteCommand(
-        0xA4); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+    ssd1306_WriteCommand(0xA4); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
 
     ssd1306_WriteCommand(0xD3); //-set display offset - CHECK
     ssd1306_WriteCommand(0x00); //-not offset
 
-    ssd1306_WriteCommand(
-        0xD5); //--set display clock divide ratio/oscillator frequency
+    ssd1306_WriteCommand(0xD5); //--set display clock divide ratio/oscillator frequency
     ssd1306_WriteCommand(0xF0); //--set divide ratio
 
     ssd1306_WriteCommand(0xD9); //--set pre-charge period
@@ -251,8 +245,7 @@ char ssd1306_WriteChar(char ch, FontDef Font, SSD1306_COLOR color)
         return 0;
 
     // Check remaining space on current line
-    if (SSD1306_WIDTH < (SSD1306.CurrentX + Font.width) ||
-        SSD1306_HEIGHT < (SSD1306.CurrentY + Font.height)) {
+    if (SSD1306_WIDTH < (SSD1306.CurrentX + Font.width) || SSD1306_HEIGHT < (SSD1306.CurrentY + Font.height)) {
         // Not enough space on current line
         return 0;
     }
@@ -262,11 +255,9 @@ char ssd1306_WriteChar(char ch, FontDef Font, SSD1306_COLOR color)
         b = Font.data[(ch - 32) * Font.height + i];
         for (j = 0; j < Font.width; j++) {
             if ((b << j) & 0x8000) {
-                ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i),
-                                  (SSD1306_COLOR)color);
+                ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR)color);
             } else {
-                ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i),
-                                  (SSD1306_COLOR)!color);
+                ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR)!color);
             }
         }
     }
@@ -301,8 +292,7 @@ void ssd1306_SetCursor(uint8_t x, uint8_t y)
 }
 
 /* Draw line by Bresenhem's algorithm */
-void ssd1306_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
-                  SSD1306_COLOR color)
+void ssd1306_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_COLOR color)
 {
     int32_t deltaX = abs(x2 - x1);
     int32_t deltaY = abs(y2 - y1);
@@ -330,8 +320,7 @@ void ssd1306_Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
 }
 
 /* Draw polyline */
-void ssd1306_Polyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size,
-                      SSD1306_COLOR color)
+void ssd1306_Polyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size, SSD1306_COLOR color)
 {
     uint16_t i;
     if (par_vertex == NULL) {
@@ -339,8 +328,7 @@ void ssd1306_Polyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size,
     }
 
     for (i = 1; i < par_size; i++) {
-        ssd1306_Line(par_vertex[i - 1].x, par_vertex[i - 1].y, par_vertex[i].x,
-                     par_vertex[i].y, color);
+        ssd1306_Line(par_vertex[i - 1].x, par_vertex[i - 1].y, par_vertex[i].x, par_vertex[i].y, color);
     }
 
     return;
@@ -367,8 +355,7 @@ static uint16_t ssd1306_NormalizeTo0_360(uint16_t par_deg)
  * start_angle in degree
  * sweep in degree
  */
-void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle,
-                     uint16_t sweep, SSD1306_COLOR color)
+void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle, uint16_t sweep, SSD1306_COLOR color)
 {
     static const uint8_t CIRCLE_APPROXIMATION_SEGMENTS = 36;
     float                approx_degree;
@@ -381,9 +368,7 @@ void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle,
 
     loc_sweep = ssd1306_NormalizeTo0_360(sweep);
 
-    count = (ssd1306_NormalizeTo0_360(start_angle) *
-             CIRCLE_APPROXIMATION_SEGMENTS) /
-            360;
+    count           = (ssd1306_NormalizeTo0_360(start_angle) * CIRCLE_APPROXIMATION_SEGMENTS) / 360;
     approx_segments = (loc_sweep * CIRCLE_APPROXIMATION_SEGMENTS) / 360;
     approx_degree   = loc_sweep / (float)approx_segments;
     while (count < approx_segments) {
@@ -410,8 +395,7 @@ void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle,
  * start_angle: start angle in degree
  * sweep: finish angle in degree
  */
-void ssd1306_DrawArcWithRadiusLine(uint8_t x, uint8_t y, uint8_t radius,
-                                   uint16_t start_angle, uint16_t sweep,
+void ssd1306_DrawArcWithRadiusLine(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle, uint16_t sweep,
                                    SSD1306_COLOR color)
 {
     static const uint8_t CIRCLE_APPROXIMATION_SEGMENTS = 36;
@@ -427,9 +411,7 @@ void ssd1306_DrawArcWithRadiusLine(uint8_t x, uint8_t y, uint8_t radius,
 
     loc_sweep = ssd1306_NormalizeTo0_360(sweep);
 
-    count = (ssd1306_NormalizeTo0_360(start_angle) *
-             CIRCLE_APPROXIMATION_SEGMENTS) /
-            360;
+    count           = (ssd1306_NormalizeTo0_360(start_angle) * CIRCLE_APPROXIMATION_SEGMENTS) / 360;
     approx_segments = (loc_sweep * CIRCLE_APPROXIMATION_SEGMENTS) / 360;
     approx_degree   = loc_sweep / (float)approx_segments;
 
@@ -458,8 +440,7 @@ void ssd1306_DrawArcWithRadiusLine(uint8_t x, uint8_t y, uint8_t radius,
 }
 
 /* Draw circle by Bresenhem's algorithm */
-void ssd1306_DrawCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r,
-                        SSD1306_COLOR par_color)
+void ssd1306_DrawCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r, SSD1306_COLOR par_color)
 {
     int32_t x   = -par_r;
     int32_t y   = 0;
@@ -495,8 +476,7 @@ void ssd1306_DrawCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r,
 }
 
 /* Draw filled circle. Pixel positions calculated using Bresenham's algorithm */
-void ssd1306_FillCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r,
-                        SSD1306_COLOR par_color)
+void ssd1306_FillCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r, SSD1306_COLOR par_color)
 {
     int32_t x   = -par_r;
     int32_t y   = 0;
@@ -533,8 +513,7 @@ void ssd1306_FillCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r,
 }
 
 /* Draw a rectangle */
-void ssd1306_DrawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
-                           SSD1306_COLOR color)
+void ssd1306_DrawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_COLOR color)
 {
     ssd1306_Line(x1, y1, x2, y1, color);
     ssd1306_Line(x2, y1, x2, y2, color);
@@ -545,8 +524,7 @@ void ssd1306_DrawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
 }
 
 /* Draw a filled rectangle */
-void ssd1306_FillRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
-                           SSD1306_COLOR color)
+void ssd1306_FillRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_COLOR color)
 {
     uint8_t x_start = ((x1 <= x2) ? x1 : x2);
     uint8_t x_end   = ((x1 <= x2) ? x2 : x1);
@@ -562,8 +540,7 @@ void ssd1306_FillRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
 }
 
 /* Draw a bitmap */
-void ssd1306_DrawBitmap(uint8_t x, uint8_t y, const unsigned char *bitmap,
-                        uint8_t w, uint8_t h, SSD1306_COLOR color)
+void ssd1306_DrawBitmap(uint8_t x, uint8_t y, const unsigned char *bitmap, uint8_t w, uint8_t h, SSD1306_COLOR color)
 {
     int16_t byteWidth = (w + 7) / 8; // Bitmap scanline pad = whole byte
     uint8_t byte      = 0;
@@ -577,8 +554,7 @@ void ssd1306_DrawBitmap(uint8_t x, uint8_t y, const unsigned char *bitmap,
             if (i & 7) {
                 byte <<= 1;
             } else {
-                byte =
-                    (*(const unsigned char *)(&bitmap[j * byteWidth + i / 8]));
+                byte = (*(const unsigned char *)(&bitmap[j * byteWidth + i / 8]));
             }
 
             if (byte & 0x80) {
@@ -610,3 +586,4 @@ void ssd1306_SetDisplayOn(const uint8_t on)
 }
 
 uint8_t ssd1306_GetDisplayOn() { return SSD1306.DisplayOn; }
+

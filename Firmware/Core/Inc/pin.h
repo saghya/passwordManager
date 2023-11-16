@@ -10,13 +10,13 @@
 
 extern int8_t pin[DIGITS];
 
-void    lock();
+uint8_t PIN_Get();
+uint8_t PIN_Set();
+uint8_t PIN_Check();
+uint8_t PIN_Change();
+
 uint8_t unlock();
-uint8_t getPin();
-uint8_t changePin();
-void    createUser();
-uint8_t checkPin();
-uint8_t setPin();
+void    lock();
 
 #endif // __PIN_H
 

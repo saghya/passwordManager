@@ -43,7 +43,6 @@ Core/Src/keyboard.c \
 Core/Src/led.c \
 Core/Src/menu.c \
 Core/Src/screen.c \
-Core/Src/passwords.c \
 Core/Src/pin.c \
 Core/Src/settings.c \
 Core/Src/ssd1306.c \

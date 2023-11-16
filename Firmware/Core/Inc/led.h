@@ -7,6 +7,7 @@
 
 void LED_On();
 void LED_Off();
-void toggleLED();
+void LED_Toggle();
 
 #endif // __LED_H
+

@@ -18,9 +18,10 @@ typedef struct {
     char  **rows;
 } Page;
 
-Page    initPage(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[]);
-void    drawPage(Page *p);
-void    sendStatus(FontDef *font, char *str);
-uint8_t question();
+Page    Screen_PageInit(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[]);
+void    Screen_PageDraw(Page *p);
+void    Screen_SendStatus(FontDef *font, char *str);
+uint8_t Screen_Question();
 
 #endif // __DRAW_H
+
