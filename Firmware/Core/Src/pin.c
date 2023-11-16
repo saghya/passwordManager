@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "flash.h"
 #include "screen.h"
 #include "pin.h"
 #include "encoder.h"
@@ -9,8 +8,8 @@
 #include "led.h"
 #include "sha256.h"
 #include "chacha.h"
-#include "keyboard.h"
 #include "userdata.h"
+#include "record.h"
 
 int8_t pin[DIGITS] = {0};
 
@@ -37,7 +36,6 @@ static inline void drawDigits(int8_t *pin, uint8_t selected)
         x = i * SSD1306_WIDTH / (DIGITS + 1) + SSD1306_WIDTH / DIGITS / 2;
         y = (SSD1306_HEIGHT - digitFont.height) / 2;
         ssd1306_SetCursor(x, y);
-        //ssd1306_WriteChar('0' + pin[i], digitFont, i == selected ? Black : White);
         ssd1306_WriteChar(i == selected ? '0' + pin[i] : '*', digitFont, i == selected ? Black : White);
     }
 

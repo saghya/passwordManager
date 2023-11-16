@@ -1,6 +1,5 @@
 #include "menu.h"
 #include "screen.h"
-#include "encoder.h"
 #include "buttons.h"
 #include "pin.h"
 #include "settings.h"

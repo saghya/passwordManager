@@ -19,17 +19,17 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "led.h"
+#include "record.h"
 #include "stm32l4xx_hal_flash.h"
 #include "stm32l4xx_hal_rng.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 #include "ssd1306.h"
 #include "pin.h"
 #include "menu.h"
-#include "record.h"
-#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

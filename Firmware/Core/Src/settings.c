@@ -1,12 +1,11 @@
+#include <stdint.h>
 #include "settings.h"
 #include "keyboard.h"
 #include "screen.h"
-#include "encoder.h"
 #include "buttons.h"
 #include "pin.h"
 #include "record.h"
 #include "userdata.h"
-#include <stdint.h>
 
 static uint8_t setKeyboardLanguage()
 {

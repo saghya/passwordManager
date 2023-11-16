@@ -1,14 +1,13 @@
+#include <stdint.h>
+#include <string.h>
 #include "record.h"
 #include "buttons.h"
 #include "flash.h"
-#include <stdint.h>
-#include <string.h>
 #include "chacha.h"
 #include "keyboard.h"
 #include "screen.h"
 #include "pin.h"
 #include "encoder.h"
-#include "stm32l4xx_hal.h"
 #include "userdata.h"
 
 static inline void    setChar(char *str, uint8_t *selected);
@@ -35,7 +34,7 @@ void Record_Create(Record *rcrd, uint8_t *site, uint8_t *username, uint8_t *pass
     rcrd->tabnum = tabnum;
 }
 
-uint8_t Record_Save(const Record *rcrd)
+uint8_t Record_Save(const Record *record)
 {
     uint32_t addr = 0;
     Record  *r    = (Record *)FIRST_RECORD_ADDR;
@@ -48,28 +47,29 @@ uint8_t Record_Save(const Record *rcrd)
         }
     }
 
-    if (!addr || !unlock() || !UserData_Read(USER_DATA_ADDR, &u))
+    if (!addr || !unlock() || !UserData_Read(USER_DATA_ADDR, &u)) {
         return 0;
+    }
 
     chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
-    chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
-    chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
-    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(Record) / 8);
+    chacha_xor(&ctx, (uint8_t *)record->username, sizeof(record->username));
+    chacha_xor(&ctx, (uint8_t *)record->password, sizeof(record->password));
+    Flash_Write_Page(addr, (uint64_t *)record, sizeof(Record) / 8);
     Screen_SendStatus(&Font_7x10, "Record saved");
     return 1;
 }
 
-uint8_t Record_Read(uint32_t addr, Record *rcrd)
+uint8_t Record_Read(uint32_t addr, Record *record)
 {
     UserData u = {0};
     if (addr < FIRST_RECORD_ADDR || addr > LAST_RECORD_ADDR || !UserData_Read(USER_DATA_ADDR, &u))
         return 0;
 
-    Flash_Read_Data(addr, (uint64_t *)rcrd, sizeof(Record) / 8);
+    Flash_Read_Data(addr, (uint64_t *)record, sizeof(Record) / 8);
 
     chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
-    chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
-    chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
+    chacha_xor(&ctx, (uint8_t *)record->username, sizeof(record->username));
+    chacha_xor(&ctx, (uint8_t *)record->password, sizeof(record->password));
     return 1;
 }
 
@@ -133,9 +133,7 @@ void Record_SitesLoop()
         }
         if (btn2() || e_sw()) {
             int rIdx = findFirstFreeRecordIdx(&page);
-            if (rIdx < 0)
-                return;
-            if (!Record_Type((uint32_t)&r[rIdx])) {
+            if (rIdx < 0 || !Record_Type((uint32_t)&r[rIdx])) {
                 return;
             }
         }
@@ -200,8 +198,6 @@ static void drawChars(char *str, uint8_t selected)
         y = (SSD1306_HEIGHT - charFont.height) / 2 + (i / (SSD1306_WIDTH / (charFont.width + 1))) * (charFont.height + 1);
         ssd1306_SetCursor(x, y);
         ssd1306_WriteChar(str[i], charFont, i == selected ? Black : White);
-        //ssd1306_WriteChar(i == selected ? str[i] : '*', digitFont,
-        //                  i == selected ? Black : White);
     }
 
     ssd1306_UpdateScreen();
@@ -259,21 +255,21 @@ static int32_t findFirstFreeRecordIdx(const Page *page)
     return -1;
 }
 
-static uint8_t saveRecordAt(uint32_t addr, Record *rcrd)
+static uint8_t saveRecordAt(uint32_t addr, Record *record)
 {
     UserData u = {0};
     if (!addr || !unlock() || !UserData_Read(USER_DATA_ADDR, &u))
         return 1;
 
     chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
-    chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
-    chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
-    Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(Record) / 8);
+    chacha_xor(&ctx, (uint8_t *)record->username, sizeof(record->username));
+    chacha_xor(&ctx, (uint8_t *)record->password, sizeof(record->password));
+    Flash_Write_Page(addr, (uint64_t *)record, sizeof(Record) / 8);
     Screen_SendStatus(&Font_7x10, "Record saved");
     return 0;
 }
 
-static uint8_t editRecordLoop(Record *rec)
+static uint8_t editRecordLoop(Record *record)
 {
     enum { SITE, USERNAME, PASSWORD, SAVE };
     char   *m[]  = {"Site", "Username", "Password", "Save", NULL};
@@ -287,16 +283,17 @@ static uint8_t editRecordLoop(Record *rec)
         if (btn2() || e_sw()) {
             switch (page.selected_string_idx) {
                 case SITE:
-                    next = modifyString("Site:", (char *)&rec->site);
+                    next = modifyString("Site:", (char *)&record->site);
                     break;
                 case USERNAME:
-                    next = modifyString("Username:", (char *)&rec->username);
+                    next = modifyString("Username:", (char *)&record->username);
                     break;
                 case PASSWORD:
-                    next = modifyString("Password:", (char *)&rec->password);
+                    next = modifyString("Password:", (char *)&record->password);
                     break;
                 case SAVE:
-                    if (rec->site[0] && Screen_Question()) {
+                    if (record->site[0] && Screen_Question()) {
+                        record->tabnum = *record->username && *record->password;
                         return 1;
                     }
                     break;
@@ -312,9 +309,8 @@ static uint8_t editRecordLoop(Record *rec)
 
 static inline uint8_t newRecordLoop()
 {
-    Record rec = {0};
-    rec.tabnum = 1;
-    if (unlock() && editRecordLoop(&rec) && Record_Save(&rec)) {
+    Record record = {0};
+    if (unlock() && editRecordLoop(&record) && Record_Save(&record)) {
         return 1;
     }
     return 0;

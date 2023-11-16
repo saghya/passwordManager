@@ -3,6 +3,7 @@
 
 #include "main.h"
 #include "keyboard.h"
+#include "record.h"
 #include <stdint.h>
 
 #define USER_DATA_ADDR ((uint32_t)(FIRST_RECORD_ADDR - FLASH_PAGE_SIZE)) // directly before records

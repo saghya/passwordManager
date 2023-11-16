@@ -2,8 +2,6 @@
 #define __PIN_H
 
 #include "main.h"
-#include "record.h"
-#include "keyboard.h"
 
 #define DIGITS         6
 #define AUTOLOCK_TIMER TIM16->CNT
