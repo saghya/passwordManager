@@ -73,7 +73,7 @@ void settingsLoop()
                     changePin();
                     break;
                 case FACTORY_RESET:
-                    if (question() && getPin()) {
+                    if (question() && unlock()) {
                         delete_all_records();
                         createUser();
                     }

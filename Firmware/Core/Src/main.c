@@ -163,8 +163,6 @@ int main(void)
     //    save_record(&r0[i]);
     //}
 
-    uint32_t rand = 0;
-    HAL_RNG_GenerateRandomNumber(&hrng, &rand);
     while (1) {
         menuLoop();
         /* USER CODE END WHILE */

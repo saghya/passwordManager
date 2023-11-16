@@ -30,14 +30,7 @@ static inline void readSites()
 void sitesLoop()
 {
     readSites();
-
-    //static Page    page;
-    //static uint8_t pageInitialized = 0;
-    //if (pageInitialized == 0) { // only init once
-    //    pageInitialized = 1;
-    //    page            = initPage(&Font_11x18, "Sites:", &Font_7x10, sites);
-    //}
-    Page page            = initPage(&Font_11x18, "Sites:", &Font_7x10, sites);
+    Page page = initPage(&Font_11x18, "Sites:", &Font_7x10, sites);
 
     while (1) {
         if (btn1()) {
@@ -79,7 +72,11 @@ void save_record(const record *rcrd)
     }
     if (!addr)
         return;
-    chacha_init(&ctx, key, nonce);
+
+    UserData u = {0};
+    readUserData(USER_DATA_ADDR, &u);
+
+    chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
     chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
     chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
     Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(record) / 8);
@@ -91,7 +88,10 @@ void save_record_at(uint32_t addr, record *rcrd)
     if (!addr)
         return;
 
-    chacha_init(&ctx, key, nonce);
+    UserData u = {0};
+    readUserData(USER_DATA_ADDR, &u);
+
+    chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
     chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
     chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
     Flash_Write_Page(addr, (uint64_t *)rcrd, sizeof(record) / 8);
@@ -100,8 +100,12 @@ void save_record_at(uint32_t addr, record *rcrd)
 
 void read_record(uint32_t addr, record *rcrd)
 {
-    chacha_init(&ctx, key, nonce);
+    UserData u = {0};
+    readUserData(USER_DATA_ADDR, &u);
+
     Flash_Read_Data(addr, (uint64_t *)rcrd, sizeof(record) / 8);
+
+    chacha_init(&ctx, (uint8_t *)u.recordKey, (uint8_t *)u.recordNonce);
     chacha_xor(&ctx, (uint8_t *)rcrd->username, sizeof(rcrd->username));
     chacha_xor(&ctx, (uint8_t *)rcrd->password, sizeof(rcrd->password));
 }
@@ -291,7 +295,7 @@ void deleteLoop()
                 if (r[i].xValid == 0)
                     cnt++;
                 if (cnt == page.selected_string_idx) {
-                    if (question() && getPin()) {
+                    if (question() && unlock()) {
                         delete_record((uint32_t)&r[i]);
                         return;
                     }

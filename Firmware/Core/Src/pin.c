@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "flash.h"
@@ -8,16 +9,23 @@
 #include "led.h"
 #include "sha256.h"
 #include "stm32l4xx_hal_rng.h"
+#include "chacha.h"
 
 extern RNG_HandleTypeDef hrng;
 
-int8_t  pincode[DIGITS] = {1, 0, 0, 0, 0, 0};
-uint8_t unlocked        = 0;
+int8_t pin[DIGITS] = {0};
 
-uint8_t checkPin(int8_t *pin1, int8_t *pin2)
+void saveUserData(UserData *u);
+
+uint8_t checkPin()
 {
-    for (int i = 0; i < DIGITS; i++) {
-        if (pin1[i] != pin2[i]) {
+    uint8_t    buff[32] = {0};
+    SHA256_CTX ctx;
+    sha256_init(&ctx);
+    sha256_update(&ctx, (BYTE *)pin, DIGITS);
+    sha256_final(&ctx, (BYTE *)buff);
+    for (int i = 0; i < sizeof(buff); i++) {
+        if (buff[i] != ((UserData *)USER_DATA_ADDR)->hashedPW[i]) {
             return 0;
         }
     }
@@ -54,28 +62,50 @@ void drawDigits(int8_t *pin, uint8_t selected)
     ssd1306_UpdateScreen();
 }
 
-static inline void drawPin(int8_t *pin, uint8_t *selected) {
+static inline void drawPin(int8_t *pin, uint8_t *selected)
+{
     setDigits(pin, selected);
     drawDigits(pin, *selected);
 }
 
-void changePin()
+uint8_t getPin()
+{
+    ssd1306_Fill(Black); // clear screen
+    uint8_t selectedDigit = 0;
+    while (1) {
+        if (btn1()) {
+            return 0;
+        }
+        if (btn2()) {
+            return 1;
+        }
+        drawPin(pin, &selectedDigit);
+    }
+}
+
+uint8_t unlock()
+{
+    while (!checkPin()) {
+        if (btn1()) {
+            return 0;
+        }
+        getPin();
+    }
+    return 1;
+}
+
+uint8_t setPin()
 {
     int8_t  newpin1[DIGITS] = {0};
     int8_t  newpin2[DIGITS] = {0};
     uint8_t selectedDigit   = 0;
     uint8_t flag            = 1;
 
-    ssd1306_Fill(Black); // clear screen
-    if (!getPin()) {
-        return;
-    }
     while (1) {
         ssd1306_Fill(Black); // clear screen
 
         if (btn1()) {
-            lock();
-            return;
+            return 0;
         }
         if (btn2()) {
             selectedDigit = 0;
@@ -83,11 +113,10 @@ void changePin()
                 flag = 0;
                 continue;
             }
-            if (checkPin(newpin1, newpin2)) {
-                memcpy(pincode, newpin1, sizeof(pincode));
+            if (!strncmp((char *)newpin1, (char *)newpin2, DIGITS)) {
+                memcpy(pin, newpin1, DIGITS);
                 sendStatus(&Font_11x18, "New PIN set");
-                lock();
-                return;
+                return 1;
             } else {
                 memset(newpin1, 0, sizeof(newpin1));
                 memset(newpin2, 0, sizeof(newpin2));
@@ -97,43 +126,46 @@ void changePin()
         }
         ssd1306_SetCursor(0, 0);
         ssd1306_WriteString(flag ? "Enter new PIN:" : "Enter again:", Font_7x10, Black);
-        //setDigits(flag ? newpin1 : newpin2, &selectedDigit);
-        //drawDigits(flag ? newpin1 : newpin2, selectedDigit);
         drawPin(flag ? newpin1 : newpin2, &selectedDigit);
     }
 }
 
+uint8_t changePin()
+{
+    UserData u = {0};
+    if (!unlock()) {
+        return 0;
+    }
+    readUserData(USER_DATA_ADDR, &u);
+    if (setPin()) {
+        saveUserData(&u);
+        return 1;
+    }
+    return 0;
+}
+
 void lock()
 {
-    unlocked = 0;
+    memset(pin, 0, DIGITS);
     LED_Off();
 }
 
-uint8_t getPin()
+void saveUserData(UserData *u)
 {
-    int8_t pinFromUser[DIGITS] = {0};
-    ssd1306_Fill(Black); // clear screen
-    uint8_t selectedDigit = 0;
-    while (1) {
-        if (btn1()) {
-            return 0;
-        }
-        if (btn2()) {
-            if (checkPin(pinFromUser, pincode)) {
-                unlocked       = 1;
-                AUTOLOCK_TIMER = 0;
-                LED_On();
-                return 1;
-            }
-            // reset pins
-            memset(pinFromUser, 0, DIGITS);
-            selectedDigit = 0;
-        }
+    uint8_t        key[32] = {0};
+    chacha_context chacha_ctx;
+    SHA256_CTX     sha_ctx;
 
-        //setDigits(pinFromUser, &selectedDigit);
-        //drawDigits(pinFromUser, selectedDigit);
-        drawPin(pinFromUser, &selectedDigit);
-    }
+    sha256_init(&sha_ctx);
+    sha256_update(&sha_ctx, (BYTE *)pin, DIGITS);
+    sha256_final(&sha_ctx, (BYTE *)u->hashedPW);
+
+    memcpy(key, pin, DIGITS);
+    chacha_init(&chacha_ctx, key, (uint8_t *)u->keyNonce);
+    chacha_xor(&chacha_ctx, (uint8_t *)u->recordKey, sizeof(u->recordKey));
+    chacha_xor(&chacha_ctx, (uint8_t *)u->recordNonce, sizeof(u->recordNonce));
+
+    Flash_Write_Data(USER_DATA_ADDR, (uint64_t *)u, sizeof(UserData) / 8);
 }
 
 void createUser()
@@ -141,8 +173,12 @@ void createUser()
     UserData   u = {0};
     SHA256_CTX ctx;
 
+    while (!setPin()) {
+        sendStatus(&Font_7x10, "PIN is required");
+    }
+
     sha256_init(&ctx);
-    //sha256_update(&ctx, (BYTE *)pw, strlen(pw));
+    sha256_update(&ctx, (BYTE *)pin, DIGITS);
     sha256_final(&ctx, (BYTE *)u.hashedPW);
 
     for (int i = 0; i < sizeof(u.keyNonce) / 4; i++) {
@@ -154,5 +190,24 @@ void createUser()
         HAL_RNG_GenerateRandomNumber(&hrng, &u.recordKey[i]);
     }
 
+    saveUserData(&u);
+}
+
+void readUserData(uint32_t addr, UserData *u)
+{
+    uint8_t        key[32] = {0};
+    chacha_context ctx;
+
+    memcpy(u, (uint8_t*)USER_DATA_ADDR, sizeof(UserData));
+    while (!unlock()) {
+        if (btn1()) {
+            return;
+        }
+    }
+
+    memcpy(key, pin, DIGITS);
+    chacha_init(&ctx, key, (uint8_t *)u->keyNonce);
+    chacha_xor(&ctx, (uint8_t *)u->recordKey, sizeof(u->recordKey));
+    chacha_xor(&ctx, (uint8_t *)u->recordNonce, sizeof(u->recordNonce));
 }
 
