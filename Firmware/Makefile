@@ -56,6 +56,7 @@ Core/Src/chacha.c \
 Core/Src/flash.c \
 Core/Src/record.c \
 Core/Src/sha256.c \
+Core/Src/userdata.c \
 USB_DEVICE/App/usb_device.c \
 USB_DEVICE/App/usbd_desc.c \
 USB_DEVICE/Target/usbd_conf.c \

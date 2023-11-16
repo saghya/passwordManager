@@ -118,51 +118,13 @@ int main(void)
     HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL); // encoder: TIM1->CNT
     HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_2);      // green led: TIM15->CCR2
     HAL_TIM_Base_Start_IT(&htim16);
-    ssd1306_Init();  // initialize the display
+    ssd1306_Init(); // initialize the display
     LED_Off();
 
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-
-    //delete_all_records();
-    //record r0[20] = {{.site = "0", .username = "0", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "1", .username = "1", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "2", .username = "2", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "3", .username = "3", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "4", .username = "4", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "5", .username = "5", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "6", .username = "6", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "7", .username = "7", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "8", .username = "8", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "9", .username = "1", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "10", .username = "2", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "11", .username = "3", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "12", .username = "4", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "13", .username = "5", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "14", .username = "7", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "15", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "16", .username = "8", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "17", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "18", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "19", .username = "9", .password = " 1234 ", .tabnum = 1, .xValid = 0}};
-    //for (int i = 0; i < 20; i++) {
-    //    save_record(&r0[i]);
-    //}
-    //for (int i = 0; i < 5; i++ ) {
-    //    delete_record(FIRST_RECORD_ADDR + (rand() % 20) * sizeof(record));
-    //}
-    //record r0[5] = {{.site = "lol", .username = "0", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "xd", .username = "1", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "wow", .username = "2", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "crazy", .username = "3", .password = " 1234 ", .tabnum = 1, .xValid = 0},
-    //                 {.site = "cool", .username = "4", .password = " 1234 ", .tabnum = 1, .xValid = 0}};
-
-    //for (int i = 0; i < 5; i++) {
-    //    save_record(&r0[i]);
-    //}
-
     while (1) {
         menuLoop();
         /* USER CODE END WHILE */
@@ -468,9 +430,8 @@ static void MX_GPIO_Init(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    if (htim == &htim16 && inSites) { // lock after 32s
-        //inSites = 0;                  // back to menu
-        //lock();
+    if (htim == &htim16) { // lock after 32s
+        lock();
     }
 }
 

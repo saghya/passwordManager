@@ -1,62 +1,48 @@
 #include "settings.h"
+#include "keyboard.h"
 #include "screen.h"
 #include "encoder.h"
 #include "buttons.h"
 #include "pin.h"
 #include "record.h"
+#include "userdata.h"
+#include <stdint.h>
 
-void setKeyboardLanguage()
+uint8_t setKeyboardLanguage()
 {
-    char          *keyboardlanguages[] = {"HU", "EN", NULL};
-    static Page    page;
-    static uint8_t pageInitialized = 0;
-    if (pageInitialized == 0) { // only init once
-        pageInitialized = 1;
-        page            = initPage(&Font_7x10, "Keyboard language:", &Font_7x10, keyboardlanguages);
+    UserData u = {0};
+    if (!readUserData(USER_DATA_ADDR, &u))
+        return 0;
+    char   *keyboardlanguages[] = {"HU", "US", NULL};
+    Page    page                = initPage(&Font_7x10, "Keyboard language:", &Font_7x10, keyboardlanguages);
+    uint8_t idx                 = 0;
+    if (u.keyboard == US_keys) {
+        idx = page.selected_row_idx = 1;
     }
-    Page page_copy = page;
 
     while (1) {
         if (btn1()) { // cancel
-            return;
-        } else if (btn2() || e_sw()) { // save changes
-            page = page_copy;
-            return;
+            return 1;
+        } else if (btn2() || e_sw()) {
+            if (page.selected_row_idx != idx) { // only save changes if changed
+                u.keyboard = page.selected_row_idx ? US_keys : HU_keys;
+                if (!unlock() || !saveUserData(&u))
+                    return 0;
+            }
+            sendStatus(&Font_7x10, "Keyboard set");
+            return 1;
         }
 
-        drawPage(&page_copy);
-    }
-}
-
-void setDevice()
-{
-    char          *devices[] = {"Windows", "Linux", "Android", "Iphone", NULL};
-    static Page    page;
-    static uint8_t pageInitialized = 0;
-    if (pageInitialized == 0) { // only init once
-        pageInitialized = 1;
-        page            = initPage(&Font_7x10, "Target device:", &Font_7x10, devices);
-    }
-    Page page_copy = page;
-
-    while (1) {
-        if (btn1()) { // cancel
-            return;
-        } else if (btn2() || e_sw()) { // save changes
-            page = page_copy;
-            return;
-        }
-
-        drawPage(&page_copy);
+        drawPage(&page);
     }
 }
 
 void settingsLoop()
 {
-    enum { KEYBOARD_LANGUAGE, TARGET_DEVICE, CHANGE_PIN, FACTORY_RESET };
-    char *settings[] = {"Keyboard language", "Target device", "Change PIN", "Factory reset", NULL};
+    enum { KEYBOARD_LANGUAGE, CHANGE_PIN, FACTORY_RESET };
+    char *settings[] = {"Keyboard language", "Change PIN", "Factory reset", NULL};
 
-    Page page = initPage(&Font_11x18, "Settings:", &Font_7x10, settings);
+    Page page = initPage(&Font_11x18, "Settings", &Font_7x10, settings);
     while (1) {
         if (btn1()) {
             return;
@@ -64,17 +50,19 @@ void settingsLoop()
         if (btn2() || e_sw()) {
             switch (page.selected_string_idx) {
                 case KEYBOARD_LANGUAGE:
-                    setKeyboardLanguage();
-                    break;
-                case TARGET_DEVICE:
-                    setDevice();
+                    if (!setKeyboardLanguage()) {
+                        return;
+                    }
                     break;
                 case CHANGE_PIN:
-                    changePin();
+                    if (!changePin()) {
+                        return;
+                    }
                     break;
                 case FACTORY_RESET:
-                    if (question() && unlock()) {
-                        delete_all_records();
+                    if (unlock() && question()) {
+                        sendStatus(&Font_7x10, "Reseted");
+                        deleteAllRecords();
                         createUser();
                     }
                     break;

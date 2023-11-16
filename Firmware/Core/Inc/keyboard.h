@@ -3,8 +3,6 @@
 
 #include "usbd_hid.h"
 
-#define NumberOfKeys 124
-
 /**********************
  * KEYBOARD MODIFIERS *
  **********************/
@@ -32,7 +30,10 @@ typedef struct {
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern keyboardHID        keyboardhid;
+extern Keys              US_keys[];
+extern Keys              HU_keys[];
 
 void typeString(char *str);
 
 #endif // __KEYBOARD_H
+

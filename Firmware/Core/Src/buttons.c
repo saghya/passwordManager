@@ -1,9 +1,11 @@
+#include "main.h"
 #include "buttons.h"
 
 uint8_t button(uint8_t btn, uint8_t *isPressed)
 {
     if (!*isPressed && !btn) {
         *isPressed = 1;
+        TIM16->CNT = 0; // reset idle
         return 1;
     } else if (btn) {
         *isPressed = 0;

@@ -2,6 +2,7 @@
 #define __RECORD_H
 
 #include "flash.h"
+#include <stdint.h>
 
 #define NUM_OF_RECORD_PAGES ((uint32_t)31)
 #define FIRST_RECORD_ADDR   (FIRST_PAGE_ADDR + (NUM_OF_PAGES - NUM_OF_RECORD_PAGES) * FLASH_PAGE_SIZE)
@@ -17,17 +18,14 @@ typedef struct __attribute__((packed, aligned(8))) {
     uint8_t password[STR_LEN];
 } record;
 
-extern volatile uint8_t inSites;
-
-void     sitesLoop();
-void     create_record(record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum);
-void     save_record(const record *rcrd);
-void     read_record(uint32_t addr, record *rcrd);
-void     typeRecord(uint32_t addr);
-void     delete_record(uint32_t addr);
-uint32_t delete_all_records();
-
-void recordsLoop();
+void    sitesLoop();
+void    createRecord(record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum);
+uint8_t saveRecord(const record *rcrd);
+uint8_t readRecord(uint32_t addr, record *rcrd);
+uint8_t typeRecord(uint32_t addr);
+uint8_t deleteRecord(uint32_t addr);
+uint8_t deleteAllRecords();
+void    recordsLoop();
 
 #endif // __RECORD_H
 
