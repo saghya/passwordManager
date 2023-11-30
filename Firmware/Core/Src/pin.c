@@ -7,7 +7,9 @@
 #include "buttons.h"
 #include "led.h"
 #include "sha256.h"
+#include "chacha.h"
 #include "userdata.h"
+#include "record.h"
 
 int8_t pin[DIGITS] = {0};
 

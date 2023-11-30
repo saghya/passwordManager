@@ -2,6 +2,7 @@
 #define __FLASH_H
 
 #include <stdint.h>
+#include "stm32l4xx_hal.h"
 
 #define NUM_OF_PAGES    ((uint32_t)64)
 #define FIRST_PAGE_ADDR ((uint32_t)0x8000000)

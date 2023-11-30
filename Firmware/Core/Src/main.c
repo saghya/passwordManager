@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "led.h"
+#include "record.h"
 #include "stm32l4xx_hal_flash.h"
 #include "stm32l4xx_hal_rng.h"
 #include "usb_device.h"

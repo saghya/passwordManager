@@ -3,6 +3,7 @@
 #include "sha256.h"
 #include "pin.h"
 #include "screen.h"
+#include "buttons.h"
 #include <stdint.h>
 
 extern RNG_HandleTypeDef hrng;
