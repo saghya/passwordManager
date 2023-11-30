@@ -1,7 +1,6 @@
 #ifndef __USER_DATA_H
 #define __USER_DATA_H
 
-#include "main.h"
 #include "keyboard.h"
 #include "record.h"
 #include <stdint.h>
