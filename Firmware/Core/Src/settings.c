@@ -13,18 +13,18 @@ static uint8_t setKeyboardLanguage()
     if (!UserData_Read(USER_DATA_ADDR, &u))
         return 0;
     char   *keyboardlanguages[] = {"HU", "US", NULL};
-    Page    page                = Screen_PageInit(&Font_7x10, "Keyboard language:", &Font_7x10, keyboardlanguages);
+    Menu    menu                = Screen_MenuInit(&Font_7x10, "Keyboard language:", &Font_7x10, keyboardlanguages);
     uint8_t idx                 = 0;
     if (u.keyboard == US_keys) {
-        idx = page.selected_row_idx = 1;
+        idx = menu.selected_row_idx = 1;
     }
 
     while (unlock()) {
         if (btn1()) { // cancel
             return 1;
         } else if (btn2() || e_sw()) {
-            if (page.selected_row_idx != idx) { // only save changes if changed
-                u.keyboard = page.selected_row_idx ? US_keys : HU_keys;
+            if (menu.selected_row_idx != idx) { // only save changes if changed
+                u.keyboard = menu.selected_row_idx ? US_keys : HU_keys;
                 if (!unlock() || !UserData_Save(&u))
                     return 0;
             }
@@ -32,7 +32,7 @@ static uint8_t setKeyboardLanguage()
             return 1;
         }
 
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
     return 1;
 }
@@ -51,13 +51,13 @@ void Settings_Loop()
     enum { KEYBOARD_LANGUAGE, CHANGE_PIN, FACTORY_RESET };
     char *settings[] = {"Keyboard language", "Change PIN", "Factory reset", NULL};
 
-    Page page = Screen_PageInit(&Font_11x18, "Settings", &Font_7x10, settings);
+    Menu menu = Screen_MenuInit(&Font_11x18, "Settings", &Font_7x10, settings);
     while (unlock()) {
         if (btn1()) {
             return;
         }
         if (btn2() || e_sw()) {
-            switch (page.selected_string_idx) {
+            switch (menu.selected_string_idx) {
                 case KEYBOARD_LANGUAGE:
                     if (!setKeyboardLanguage()) {
                         return;
@@ -74,7 +74,7 @@ void Settings_Loop()
             }
         }
 
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
 }
 

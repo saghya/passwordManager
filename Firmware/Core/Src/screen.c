@@ -5,74 +5,74 @@
 
 uint8_t rows_indent = 5;
 
-Page Screen_PageInit(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[])
+Menu Screen_MenuInit(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[])
 {
-    Page page = {0};
+    Menu menu = {0};
 
     // set variables
     if (title_font != NULL && title_str != NULL) {
-        page.title_font = *title_font;
+        menu.title_font = *title_font;
     }
     if (rows_font != NULL && rows_str != NULL) {
-        page.rows_font = *rows_font;
+        menu.rows_font = *rows_font;
     }
-    page.title = title_str;
-    page.rows  = rows_str;
+    menu.title = title_str;
+    menu.rows  = rows_str;
 
     // calculate number of strings
-    for (page.strs_len = 0; page.rows[page.strs_len] != NULL; (page.strs_len)++)
+    for (menu.strs_len = 0; menu.rows[menu.strs_len] != NULL; (menu.strs_len)++)
         ;
 
     // calculate how many rows will fit the screen
-    page.num_rows = (SSD1306_HEIGHT - 1 - (page.title_font.height + 1)) / (page.rows_font.height + 1);
-    if (page.num_rows > page.strs_len) {
-        page.num_rows = page.strs_len;
+    menu.num_rows = (SSD1306_HEIGHT - 1 - (menu.title_font.height + 1)) / (menu.rows_font.height + 1);
+    if (menu.num_rows > menu.strs_len) {
+        menu.num_rows = menu.strs_len;
     }
 
     // start drawing rows from the bottom
-    page.rows_offset = SSD1306_HEIGHT - page.num_rows * (page.rows_font.height + 1) - page.title_font.height;
+    menu.rows_offset = SSD1306_HEIGHT - menu.num_rows * (menu.rows_font.height + 1) - menu.title_font.height;
     // center rows
-    page.rows_offset /= 2;
+    menu.rows_offset /= 2;
 
-    return page;
+    return menu;
 }
 
-void Screen_PageDraw(Page *page)
+void Screen_MenuDraw(Menu *menu)
 {
-    page->selected_row_idx += encoderDelta();
+    menu->selected_row_idx += encoderDelta();
 
     // handle overflow
-    if (page->selected_row_idx < 0) {
-        if (page->string_offset == 0) {
-            page->string_offset    = page->strs_len - page->num_rows;
-            page->selected_row_idx = page->num_rows - 1;
+    if (menu->selected_row_idx < 0) {
+        if (menu->string_offset == 0) {
+            menu->string_offset    = menu->strs_len - menu->num_rows;
+            menu->selected_row_idx = menu->num_rows - 1;
         } else {
-            (page->string_offset)--;
-            page->selected_row_idx = 0;
+            (menu->string_offset)--;
+            menu->selected_row_idx = 0;
         }
-    } else if (page->selected_row_idx > page->num_rows - 1) {
-        if (page->string_offset == page->strs_len - page->num_rows) {
-            page->string_offset    = 0;
-            page->selected_row_idx = 0;
+    } else if (menu->selected_row_idx > menu->num_rows - 1) {
+        if (menu->string_offset == menu->strs_len - menu->num_rows) {
+            menu->string_offset    = 0;
+            menu->selected_row_idx = 0;
         } else {
-            (page->string_offset)++;
-            page->selected_row_idx = page->num_rows - 1;
+            (menu->string_offset)++;
+            menu->selected_row_idx = menu->num_rows - 1;
         }
     }
-    page->selected_string_idx = page->string_offset + page->selected_row_idx;
+    menu->selected_string_idx = menu->string_offset + menu->selected_row_idx;
 
     ssd1306_Fill(Black); // clear screen
 
     // draw title
     ssd1306_SetCursor(0, 0);
-    ssd1306_WriteString(page->title, page->title_font, Black);
+    ssd1306_WriteString(menu->title, menu->title_font, Black);
 
     // draw rows
-    if (page->rows != NULL) {
-        for (int i = 0; i + page->string_offset < page->strs_len && i < page->num_rows; i++) {
-            ssd1306_SetCursor(rows_indent, (page->rows_font.height + 1) * i + page->title_font.height + page->rows_offset);
-            ssd1306_WriteString(page->rows[i + page->string_offset], page->rows_font,
-                                i == page->selected_row_idx ? Black : White);
+    if (menu->rows != NULL) {
+        for (int i = 0; i + menu->string_offset < menu->strs_len && i < menu->num_rows; i++) {
+            ssd1306_SetCursor(rows_indent, (menu->rows_font.height + 1) * i + menu->title_font.height + menu->rows_offset);
+            ssd1306_WriteString(menu->rows[i + menu->string_offset], menu->rows_font,
+                                i == menu->selected_row_idx ? Black : White);
         }
     }
 
@@ -92,20 +92,20 @@ uint8_t Screen_Question()
 {
     enum { NO, YES };
     char *options[] = {"no", "yes", NULL};
-    Page  page      = Screen_PageInit(&Font_7x10, "Are you sure?", &Font_7x10, options);
+    Menu  menu      = Screen_MenuInit(&Font_7x10, "Are you sure?", &Font_7x10, options);
     while (1) {
         if (btn1()) {
             return 0;
         }
         if (btn2() || e_sw()) {
-            switch (page.selected_string_idx) {
+            switch (menu.selected_string_idx) {
                 case YES:
                     return 1;
                 case NO:
                     return 0;
             }
         }
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
 }
 

@@ -14,7 +14,7 @@ static inline void    setChar(char *str, uint8_t *selected);
 static void           drawChars(char *str, uint8_t selected);
 static uint8_t        modifyString(char *title, char str[STR_LEN]);
 static inline uint8_t readSites();
-static int32_t        findFirstFreeRecordIdx(const Page *page);
+static int32_t        findFirstFreeRecordIdx(const Menu *menu);
 static uint8_t        saveRecordAt(uint32_t addr, Record *rcrd);
 static uint8_t        editRecordLoop(Record *rec);
 static inline uint8_t newRecordLoop();
@@ -125,20 +125,20 @@ void Record_SitesLoop()
     if (!readSites()) {
         return;
     }
-    Page page = Screen_PageInit(&Font_11x18, "Sites", &Font_7x10, sites);
+    Menu menu = Screen_MenuInit(&Font_11x18, "Sites", &Font_7x10, sites);
 
     while (unlock()) {
         if (btn1()) {
             return;
         }
         if (btn2() || e_sw()) {
-            int rIdx = findFirstFreeRecordIdx(&page);
+            int rIdx = findFirstFreeRecordIdx(&menu);
             if (rIdx < 0 || !Record_Type((uint32_t)&r[rIdx])) {
                 return;
             }
         }
 
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
 }
 
@@ -146,13 +146,13 @@ void Record_MenuLoop()
 {
     enum { NEW, MODIFY, DELETE };
     char *m[]  = {"New", "Modify", "Delete", NULL};
-    Page  page = Screen_PageInit(&Font_11x18, "Records", &Font_7x10, m);
+    Menu  menu = Screen_MenuInit(&Font_11x18, "Records", &Font_7x10, m);
     while (unlock()) {
         if (btn1()) {
             return;
         }
         if (btn2() || e_sw()) {
-            switch (page.selected_string_idx) {
+            switch (menu.selected_string_idx) {
                 case NEW:
                     newRecordLoop();
                     break;
@@ -167,7 +167,7 @@ void Record_MenuLoop()
             }
         }
 
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
 }
 
@@ -243,12 +243,12 @@ static inline uint8_t readSites()
     return 1;
 }
 
-static int32_t findFirstFreeRecordIdx(const Page *page)
+static int32_t findFirstFreeRecordIdx(const Menu *menu)
 {
     for (int i = 0, cnt = -1; (uint32_t)&r[i] <= LAST_RECORD_ADDR; i++) {
         if (r[i].xValid == 0)
             cnt++;
-        if (cnt == page->selected_string_idx) {
+        if (cnt == menu->selected_string_idx) {
             return i;
         }
     }
@@ -273,7 +273,7 @@ static uint8_t editRecordLoop(Record *record)
 {
     enum { SITE, USERNAME, PASSWORD, SAVE };
     char   *m[]  = {"Site", "Username", "Password", "Save", NULL};
-    Page    page = Screen_PageInit(&Font_11x18, "Edit record", &Font_7x10, m);
+    Menu    menu = Screen_MenuInit(&Font_11x18, "Edit record", &Font_7x10, m);
     uint8_t next = 0;
 
     while (unlock()) {
@@ -281,7 +281,7 @@ static uint8_t editRecordLoop(Record *record)
             return 0;
         }
         if (btn2() || e_sw()) {
-            switch (page.selected_string_idx) {
+            switch (menu.selected_string_idx) {
                 case SITE:
                     next = modifyString("Site:", (char *)&record->site);
                     break;
@@ -300,9 +300,9 @@ static uint8_t editRecordLoop(Record *record)
                 default:
                     break;
             }
-            page.selected_row_idx += next;
+            menu.selected_row_idx += next;
         }
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
     return 0;
 }
@@ -320,14 +320,14 @@ static uint8_t modifyRecordLoop()
 {
     if (!readSites())
         return 1;
-    Page page = Screen_PageInit(&Font_11x18, "Modify", &Font_7x10, sites);
+    Menu menu = Screen_MenuInit(&Font_11x18, "Modify", &Font_7x10, sites);
 
     while (unlock()) {
         if (btn1()) {
             return 1;
         }
         if (btn2() || e_sw()) {
-            int    rIdx = findFirstFreeRecordIdx(&page);
+            int    rIdx = findFirstFreeRecordIdx(&menu);
             Record rec  = {0};
             if (rIdx < 0 || !Record_Read((uint32_t)&r[rIdx], &rec))
                 return 0;
@@ -336,7 +336,7 @@ static uint8_t modifyRecordLoop()
                     return 0;
             }
         }
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
     return 1;
 }
@@ -346,21 +346,21 @@ static uint8_t deleteRecordLoop()
     if (!readSites()) {
         return 1;
     }
-    Page page = Screen_PageInit(&Font_11x18, "Delete", &Font_7x10, sites);
+    Menu menu = Screen_MenuInit(&Font_11x18, "Delete", &Font_7x10, sites);
 
     while (unlock()) {
         if (btn1()) {
             return 1;
         }
         if (btn2() || e_sw()) {
-            int rIdx = findFirstFreeRecordIdx(&page);
+            int rIdx = findFirstFreeRecordIdx(&menu);
             if (rIdx < 0)
                 return 0;
             if (Screen_Question()) {
                 return Record_Delete((uint32_t)&r[rIdx]);
             }
         }
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
     return 1;
 }

@@ -6,18 +6,18 @@
 #include "record.h"
 
 enum { SITES, RECORDS, SETTINGS };
-char *menus[] = {"Sites", "Records", "Settings", NULL};
+char *sub_menus[] = {"Sites", "Records", "Settings", NULL};
 
 void MainMenu_Loop()
 {
-    Page page = Screen_PageInit(&Font_11x18, "PW Manager", &Font_7x10, menus);
+    Menu menu = Screen_MenuInit(&Font_11x18, "PW Manager", &Font_7x10, sub_menus);
     while (unlock()) {
         if (btn1()) {
             lock();
             return;
         }
         if (btn2() || e_sw()) {
-            switch (page.selected_string_idx) {
+            switch (menu.selected_string_idx) {
                 case SITES:
                     Record_SitesLoop();
                     break;
@@ -30,7 +30,7 @@ void MainMenu_Loop()
             }
         }
 
-        Screen_PageDraw(&page);
+        Screen_MenuDraw(&menu);
     }
 }
 

@@ -16,10 +16,10 @@ typedef struct {
     FontDef rows_font;
     char   *title;
     char  **rows;
-} Page;
+} Menu;
 
-Page    Screen_PageInit(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[]);
-void    Screen_PageDraw(Page *p);
+Menu    Screen_MenuInit(FontDef *title_font, char *title_str, FontDef *rows_font, char *rows_str[]);
+void    Screen_MenuDraw(Menu *m);
 void    Screen_SendStatus(FontDef *font, char *str);
 uint8_t Screen_Question();
 
