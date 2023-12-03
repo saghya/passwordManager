@@ -25,13 +25,14 @@ static chacha_context ctx;
 static char          *sites[MAX_NUM_OF_RECORDS] = {0};
 static Record        *r                         = (Record *)FIRST_RECORD_ADDR;
 
-void Record_Create(Record *rcrd, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum)
+void Record_Create(Record *record, uint8_t *site, uint8_t *username, uint8_t *password, uint8_t tabnum, uint8_t enternum)
 {
-    memset(rcrd, 0, sizeof(Record));
-    memcpy(rcrd->site, site, strlen((char *)site));
-    memcpy(rcrd->username, username, strlen((char *)username));
-    memcpy(rcrd->password, password, strlen((char *)password));
-    rcrd->tabnum = tabnum;
+    memset(record, 0, sizeof(Record));
+    memcpy(record->site, site, strlen((char *)site));
+    memcpy(record->username, username, strlen((char *)username));
+    memcpy(record->password, password, strlen((char *)password));
+    record->tabnum   = tabnum;
+    record->enternum = enternum;
 }
 
 uint8_t Record_Save(const Record *record)
@@ -82,7 +83,8 @@ uint8_t Record_Type(uint32_t addr)
     for (int i = 0; i < r.tabnum; i++)
         typeString("\t");
     typeString((char *)r.password);
-    typeString("\n");
+    for (int i = 0; i < r.enternum; i++)
+        typeString("\n");
     memset(&r, 0x00, sizeof(Record));
     return 1;
 }
@@ -91,7 +93,8 @@ uint8_t Record_Delete(uint32_t addr)
 {
     if (!unlock())
         return 1;
-    Record r = {.site = {0}, .tabnum = 0, .xValid = 1, .username = {0}, .password = {0}};
+    Record r = {0};
+    r.xValid = 1;
     Flash_Write_Page(addr, (uint64_t *)&r, sizeof(Record) / 8);
     Screen_SendStatus(&Font_7x10, "Record deleted");
     return 0;
@@ -293,7 +296,8 @@ static uint8_t editRecordLoop(Record *record)
                     break;
                 case SAVE:
                     if (record->site[0] && Screen_Question()) {
-                        record->tabnum = *record->username && *record->password;
+                        record->tabnum   = *record->username && *record->password;
+                        record->enternum = *record->username || *record->password;
                         return 1;
                     }
                     break;
