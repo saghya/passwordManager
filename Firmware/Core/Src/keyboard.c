@@ -6,7 +6,7 @@
 
 keyboardHID keyboardhid = {0};
 
-Keys US_keys[] = {
+Key US_keys[] = {
     { '!',  0x1E, MOD_SHIFT_LEFT },
     { '"',  0x34, MOD_SHIFT_LEFT },
     { '#',  0x20, MOD_SHIFT_LEFT },
@@ -106,7 +106,7 @@ Keys US_keys[] = {
     { '\0', 0x00, MOD_NO_MODIFIER },
 };
 
-Keys HU_keys[] = {
+Key HU_keys[] = {
     { '0',  0x35, MOD_NO_MODIFIER },
     { '1',  0x1E, MOD_NO_MODIFIER },
     { '2',  0x1F, MOD_NO_MODIFIER },
@@ -252,7 +252,7 @@ void write(uint8_t key, uint8_t modifier)
 
 void typeString(char *data)
 {
-    Keys *keys = ((UserData*)USER_DATA_ADDR)->keyboard;
+    Key *keys = ((UserData*)USER_DATA_ADDR)->keyboard;
     for (int i = 0; data[i] != '\0'; i++) {
         for (uint8_t k = 0; keys[k].ASCII != 0; k++) {
             if (data[i] == keys[k].ASCII) {

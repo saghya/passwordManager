@@ -26,12 +26,12 @@ typedef struct {
     uint8_t ASCII;
     uint8_t usage_id;
     uint8_t modifier;
-} Keys;
+} Key;
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern keyboardHID        keyboardhid;
-extern Keys               US_keys[];
-extern Keys               HU_keys[];
+extern Key                US_keys[];
+extern Key                HU_keys[];
 
 void typeString(char *str);
 

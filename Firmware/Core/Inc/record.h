@@ -8,7 +8,7 @@
 #define FIRST_RECORD_ADDR   (FIRST_PAGE_ADDR + (NUM_OF_PAGES - NUM_OF_RECORD_PAGES) * FLASH_PAGE_SIZE)
 #define LAST_RECORD_ADDR    (FIRST_RECORD_ADDR + NUM_OF_RECORD_PAGES * FLASH_PAGE_SIZE - sizeof(Record))
 #define MAX_NUM_OF_RECORDS  ((LAST_RECORD_ADDR - FIRST_RECORD_ADDR + sizeof(Record)) / sizeof(Record))
-#define STR_LEN             32
+#define STR_LEN             64
 
 typedef struct __attribute__((packed, aligned(8))) {
     uint8_t site[STR_LEN];

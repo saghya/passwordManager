@@ -13,7 +13,7 @@ typedef struct __attribute__((packed, aligned(8))) {
     uint32_t keyNonce[3];
     uint32_t recordKey[8];
     uint32_t recordNonce[3];
-    Keys    *keyboard;
+    Key      *keyboard;
     uint8_t  xValid;
 } UserData;
 
