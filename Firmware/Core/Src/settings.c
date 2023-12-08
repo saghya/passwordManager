@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "settings.h"
 #include "keyboard.h"
+#include "keyboard_languages.h"
 #include "screen.h"
 #include "buttons.h"
 #include "pin.h"
