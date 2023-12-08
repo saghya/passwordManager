@@ -198,7 +198,7 @@ static void drawChars(char *str, uint8_t selected)
     uint8_t x, y;
     for (int i = 0; i < STR_LEN; i++) {
         x = (i % (SSD1306_WIDTH / (charFont.width + 1))) * (charFont.width + 1);
-        y = (SSD1306_HEIGHT - charFont.height) / 2 + (i / (SSD1306_WIDTH / (charFont.width + 1))) * (charFont.height + 1);
+        y = (SSD1306_HEIGHT - charFont.height) / 3 + (i / (SSD1306_WIDTH / (charFont.width + 1))) * (charFont.height + 1);
         ssd1306_SetCursor(x, y);
         ssd1306_WriteChar(str[i], charFont, i == selected ? Black : White);
     }
